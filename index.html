@@ -16,9 +16,9 @@
 					<span class="image avatar"><img src="images/avatar.jpg" alt="" /></span>
 					<h1 id="logo"><a href="#">Zhicheng (Sky) Huang</a></h1>
 					<p>
-					Computer Science and Cognitive Science<br />
-					@University of Michigan, Ann Arbor.<br>
-					Expected graduation in April, 2024
+					Computer Science<br />
+					@Brown University, Providence, RI.<br>
+					Expected graduation in May, 2025
 				</p>
 				</header>
 				<nav id="nav">
@@ -58,14 +58,13 @@
 										<a href="https://100.ucla.edu/timeline/the-internets-first-message-sent-from-ucla#:~:text=the%20Internet%20was%20%27-,LO,-%27%20%E2%80%94%20as%20in%20%27Lo" target="_blank" rel="noopener noreferrer"><h2><div class="tooltip">LO!</div></h2></a>
 										<p></p>
 									</header>
-									<p>I am a senior pursuing B.S. in Computer Science and Cognitive Science at the University of 
+									<p>
+										<i class="fa-solid fa-school"></i>&nbspI am an incoming first year student in the Sc.M. of Computer Science program at Brown University, and I expect to graduate in May 2025.
+										<br><br><i class="fa-solid fa-map-location-dot"></i>&nbspIn summer 2023, I will intern as a Software Engineer in the Map & Navigation team at Tesla.
+
+										<br><br><i class="fa-solid fa-graduation-cap"></i>&nbspI have received the B.S. degree in Computer Science and Cognitive Science at the University of 
 										Michigan, Ann Arbor. My interest includes Programming Languages (PL), Human-Computer Interaction (HCI), and Software Engineering.
 
-										<br><br>During the 2022-23 cycle, I am applying to Masters programs in Computer Science and Engineering. I am expected to start graduate program in Fall 2023 and graduate between April 2024 and April 2025.
-										<br><br>Since May 2021, I have conducted research supervised by <a href="https://web.eecs.umich.edu/~xwangsd/" target="_blank" rel="noopener noreferrer" class="image">Professor Xinyu Wang</a>
-										in the Michigan Intelligent Programming Lab (MIPL).
-										<br><br>I am currently a part-time intern at <a href="https://www.yerbba.com/aboutus" target="_blank" rel="noopener noreferrer" class="image">Yerbba</a>, and my role is Software Engineer.
-										<br><br>I am the instructional aide for <a href="https://web.eecs.umich.edu/~weimerw/481/" target="_blank" rel="noopener noreferrer" class="image">EECS 481 (Software Engineering) at the University of Michigan during this semester (Fall 22)</a>.
 									</p>
 								</div>
 							</section>
@@ -143,6 +142,14 @@
 										<li class="icon solid fa-shirt">Collect sports memorabilia</li>
 										<li class="icon solid fa-tree">Love nature and hiking</li>
 									</ul>
+								</div>
+							</section>
+							<section id="five">
+								<div>
+									<div>Website visit count:</div>
+									<div class="website-counter"></div>
+									<!-- uncomment to reset counter -->
+									<!-- <button id="reset">Reset</button> -->
 								</div>
 							</section>
 
@@ -522,6 +529,28 @@ print 'It took ' + i + ' iterations to sort the deck.';</code></pre>
 				}
 			</script>
 			<script src="https://kit.fontawesome.com/6867705894.js" crossorigin="anonymous"></script>
+			<script>
+				var counterContainer = document.querySelector(".website-counter");
+				var resetButton = document.querySelector("#reset");
+				var visitCount = localStorage.getItem("page_view");
+
+				// Check if page_view entry is present
+				if (visitCount) {
+				visitCount = Number(visitCount) + 1;
+				localStorage.setItem("page_view", visitCount);
+				} else {
+				visitCount = 1;
+				localStorage.setItem("page_view", 1);
+				}
+				counterContainer.innerHTML = visitCount;
+
+				// Adding onClick event listener
+				resetButton.addEventListener("click", () => {
+				visitCount = 1;
+				localStorage.setItem("page_view", 1);
+				counterContainer.innerHTML = visitCount;
+				});
+			</script>
 
 	</body>
 </html>
