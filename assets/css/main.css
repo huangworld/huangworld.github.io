@@ -29,6 +29,8 @@ article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
 	display: block;}
 
+
+
 body {
 	line-height: 1;
 }
@@ -99,7 +101,7 @@ input, select, textarea {
 
 	body, input, select, textarea {
 		color: #888;
-		font-family: "Lato", sans-serif;
+		font-family: 'Cascadia Code', sans-serif;
 		font-size: 16pt;
 		font-weight: 400;
 		line-height: 1.75em;
@@ -1755,7 +1757,7 @@ input, select, textarea {
 /* Section/Article */
 
 	section.special, article.special {
-		text-align: center;
+		text-align: left;
 	}
 
 	header p {
@@ -2342,7 +2344,7 @@ input, select, textarea {
 					-ms-flex-shrink: 1;
 					flex-shrink: 1;
 					padding: 1.125em 0 0 0;
-					text-align: center;
+					text-align: left;
 					width: 100%;
 				}
 
@@ -2411,7 +2413,7 @@ input, select, textarea {
 				left: 0;
 				line-height: 2.5em;
 				position: absolute;
-				text-align: center;
+				text-align: left;
 				top: 0;
 				width: 2.5em;
 			}
@@ -2905,7 +2907,7 @@ input, select, textarea {
 
 			#wrapper {
 				/* position: absolute; */
-				text-align: center;
+				text-align: left;
 				/* top: 0;
 				right: 0; */
 			}
@@ -3094,7 +3096,7 @@ input, select, textarea {
 						height: 44px;
 						line-height: 44px;
 						position: absolute;
-						text-align: center;
+						text-align: left;
 						top: 0;
 						width: 64px;
 						right: 0;
