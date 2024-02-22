@@ -20,13 +20,14 @@
 					Computer Science<br />
 					@Brown University, Providence, RI.<br>
 					Expected graduation in May, 2025
-				</p>
+					</p>
 				</header>
 				<nav id="nav">
 					<ul>
 						<li><a href="#one" class="active">About</a></li>
-						<li><a href="#two">Research Publications</a></li>
-						<li><a href="#three">Selected Projects</a></li>
+						<li><a href="#two">Research Overview</a></li>
+						<li><a href="#three">Publications</a></li>
+						<li><a href="#four">Selected Projects</a></li>
 						<!-- <li><a href="#four">Miscellaneous</a></li> -->
 
 					</ul>
@@ -57,33 +58,52 @@
 								<div class="container">
 									<header class="major">
 										<a href="https://100.ucla.edu/timeline/the-internets-first-message-sent-from-ucla#:~:text=the%20Internet%20was%20%27-,LO,-%27%20%E2%80%94%20as%20in%20%27Lo" target="_blank" rel="noopener noreferrer"><h2><div class="tooltip">LO™!</div></h2></a>
-										<p></p>
 									</header>
 									<p>
 										<i class="fa-solid fa-graduation-cap"></i>&nbspI am first year student in the Sc.M. of Computer Science program at Brown University, and I received the B.S. degree in Computer Science and Cognitive Science at the University of 
 										Michigan, Ann Arbor.
 										<!-- <br><br><i class="fa-solid fa-map-location-dot"></i>&nbspIn summer 2023, I interned as a Software Engineer in the Map & Navigation team at Tesla. -->
-
-
-										<br><br>
-										My motivation started when I became the victim of the Leviathan, centralized platforms. 
-										<br><br>
-										I started translating basketball articles into Mandarin as a volunteer on Hupu.com in 2015, and my efforts led to 1 million views by 2019. However, the platform wiped out all posts before March 2019 without any notice to its users, and I lost access to all of my work and data.
-										<br><br>
-										Instead of relying on centralized platforms to manage users’ data, I believe in an information ecology where users could easily access, store and make use of their own data. Moreover, the tools people use to achieve this ecosystem should require zero to minimal programming and must contribute to overall conviviality.
-										<br><br>
-										I have worked on several projects toward this vision to help non-programmers collect, store, and process their data. These projects span Programming Languages, Human-Computer Interaction, and Systems. Previously, I worked with Xinyu Wang, Tianyi Zhang, and Yan Chen to help non-programmers generate programs to scrape web data with minimal demonstration. Currently I am working with Nikos Vasilakis to build fault tolerant distributed shell execution and with Jeff Huang on a personal web archiver.
-
-
 									</p>
 								</div>
 							</section>
 
-						<!-- Two -->
+							<!-- two -->
 							<section id="two">
+								<div class="container">
+									<h3>Research Overview</h3>
+									Instead of relying on centralized platforms to manage users` data, I believe in an information ecology where users could easily access, store and make use of their own data. Moreover, the tools people use to achieve this ecosystem should require zero to minimal programming and must contribute to overall conviviality.
+									<br><br>
+									I have worked on several projects toward this vision to help non-programmers collect, store, and process their data. These projects span Programming Languages, Human-Computer Interaction, and Systems. Previously, I worked with Xinyu Wang, Tianyi Zhang, and Yan Chen to help non-programmers generate programs to scrape web data with minimal demonstration. Currently, I am working with Nikos Vasilakis to build fault tolerant distributed shell execution and with Jeff Huang on a personal web archiver.
+									
+									<br><br>
+									<p>My motivation started when I became the victim of the Leviathan, centralized platforms...<button onclick="toggleReadMore()" class="button" id="moreBtn">Read more</button></p>
+									
+									<div id="more">
+										<p>I started translating basketball articles into Mandarin as a volunteer on Hupu.com in 2015, and my efforts led to 1 million views by 2019. However, the platform wiped out all posts before March 2019 without any notice to its users, and I lost access to all of my work and data.</p>
+									</div>
+									
+									<script>
+									function toggleReadMore() {
+										var moreText = document.getElementById("more");
+										var btnText = document.getElementById("moreBtn");
+									
+										if (moreText.style.display === "block") {
+											moreText.style.display = "none";
+											btnText.innerHTML = "Read more";
+										} else {
+											moreText.style.display = "block";
+											btnText.innerHTML = "Read less";
+										}
+									}
+									</script>
+								</div>
+							</section>
+
+						<!-- three -->
+							<section id="three">
 								<!-- Publications -->
 								<div class="container">
-									<h3>Research Publications</h3>
+									<h3>Publications</h3>
 									<div class="features">
 										<article>
 											<a href="https://ruidong.pl/files/uist23-miwa.pdf" target="_blank" rel="noopener noreferrer" class="image"><img src="images/MIWA.png" alt="" /></a>
@@ -111,8 +131,8 @@
 									</div>
 								</div>
 							</section>
-						<!-- Three -->
-							<section id="three">
+						<!-- four -->
+							<section id="four">
 								<!-- Projects -->
 								<div class="container">
 									<h3>Highlighted Projects</h3>
@@ -342,12 +362,12 @@ print 'It took ' + i + ' iterations to sort the deck.';</code></pre>
 														<td>29.99</td>
 													</tr>
 													<tr>
-														<td>Item Two</td>
+														<td>Item three</td>
 														<td>Vis ac commodo adipiscing arcu aliquet.</td>
 														<td>19.99</td>
 													</tr>
 													<tr>
-														<td>Item Three</td>
+														<td>Item four</td>
 														<td> Morbi faucibus arcu accumsan lorem.</td>
 														<td>29.99</td>
 													</tr>
@@ -388,12 +408,12 @@ print 'It took ' + i + ' iterations to sort the deck.';</code></pre>
 														<td>29.99</td>
 													</tr>
 													<tr>
-														<td>Item Two</td>
+														<td>Item three</td>
 														<td>Vis ac commodo adipiscing arcu aliquet.</td>
 														<td>19.99</td>
 													</tr>
 													<tr>
-														<td>Item Three</td>
+														<td>Item four</td>
 														<td> Morbi faucibus arcu accumsan lorem.</td>
 														<td>29.99</td>
 													</tr>
