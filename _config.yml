@@ -55,6 +55,7 @@ plugins:
 
 # The following files will be removed from the generated website.
 exclude:
+  - vendor
   - build.sh
   - Gemfile
   - Gemfile.lock

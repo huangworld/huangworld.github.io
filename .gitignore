@@ -7,6 +7,7 @@ assets/.DS_Store
 # store custom attributes of a folder
 .DS_Store
 
+vendor/
 
 # C extensions
 *.so
