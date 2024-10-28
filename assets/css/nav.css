@@ -1,0 +1,102 @@
+/* Add a black background color to the top navigation */
+.topnav {
+  background-color: #b5e0edf7;
+  overflow: hidden;
+  position: fixed;
+  z-index: 999;
+  width: 100%;
+  display: flex; /* Set flexbox layout */
+  justify-content: space-between; /* Distribute space evenly */
+  align-items: center; /* Align items vertically */
+  padding: 10px 0; /* Adjust padding for better spacing */
+}
+
+.topnav #myLinks {
+  display: inline-flex;
+  flex-grow: 1;
+  justify-content: center;
+}
+
+.topnav a.icon {
+  display: none;
+}
+
+.topnav img {
+  margin: 0 auto;
+}
+
+/* Style the links inside the navigation bar */
+.topnav a.normal {
+  color: #ef6762;
+  text-align: center;
+  padding: 10px 9px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+.topnav a.normal:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+/* Special handling for right-aligned items */
+.topnav a.right {
+  margin-right: 0;
+}
+
+/* Media Queries for Responsive Design */
+@media screen and (max-width: 1000px) {
+  .topnav img {
+      margin-left: 3%;
+  }
+  .topnav a.right {
+      margin-right: 3%;
+  }
+  .topnav a.normal {
+      padding: 10px 5px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .topnav #myLinks {
+      display: none;
+  }
+}
+
+@media screen and (max-width: 960px) {
+  .topnav #myLinks {
+      display: none;
+  }
+  .topnav a.normal {
+      color: white;
+      float: none;
+      padding: 14px 16px;
+      text-decoration: none;
+      font-size: 17px;
+      display: block;
+  }
+  .topnav a.icon {
+      color: white;
+      display: block;
+      padding: 10px 16px;
+      font-size: 17px;
+      position: absolute;
+      right: 0;
+      top: 0;
+      margin-right: 5%;
+  }
+  .topnav a.right {
+      color: white;
+      float: none;
+      padding: 14px 16px;
+      text-decoration: none;
+      font-size: 17px;
+      display: block;
+      margin-right: 0;
+  }
+}
+
+/* Add a scroll margin for all elements targeted by anchor links */
+#about-me, #projects, #publications, #contact {
+  scroll-margin-top: 70px; /* Adjust this value based on your nav height */
+}
