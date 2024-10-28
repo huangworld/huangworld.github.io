@@ -1,0 +1,7 @@
+@inproceedings{dong2022webrobot,
+  title={WebRobot: web robotic process automation using interactive programming-by-demonstration},
+  author={Dong, Rui and Huang, Zhicheng and Lam, Ian Iong and Chen, Yan and Wang, Xinyu},
+  booktitle={Proceedings of the 43rd ACM SIGPLAN International Conference on Programming Language Design and Implementation},
+  pages={152--167},
+  year={2022}
+}

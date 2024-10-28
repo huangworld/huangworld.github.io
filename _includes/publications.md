@@ -18,7 +18,7 @@ The code is written in Markdown and is intended to be used in a website or web p
 -->
 <h1 id="publications"></h1>
 
-<h2 style="margin: 30px 0px -15px;">Publications <temp style="font-size:15px;">[</temp><a href="https://scholar.google.com/citations?user=sf-0AGoAAAAJ&hl=de" target="_blank" style="font-size:15px;">Google Scholar</a><temp style="font-size:15px;">]</temp><temp style="font-size:15px;">[</temp><a href="https://www.researchgate.net/profile/Song-Chen-60" target="_blank" style="font-size:15px;">ResearchGate</a><temp style="font-size:15px;">]</temp></h2>
+<h2 style="margin: 30px 0px -15px;">Publications <temp style="font-size:15px;">[</temp><a href="https://scholar.google.com/citations?user=_msJ5AcAAAAJ&hl=en" target="_blank" style="font-size:15px;">Google Scholar</a><temp style="font-size:15px;">]</temp></h2>
 
 
 <div class="publications">
@@ -59,8 +59,8 @@ The code is written in Markdown and is intended to be used in a website or web p
       {{ link.others }}
       {% endif %}
       {% if link.citation %} 
-      <strong> <a style="color:#e74d3c; font-weight:600"> • <i class="total_citation_mtl" data-citation="{{ link.citation }}"></i> <i style="color:#e74d3c; font-weight:600"> Citations </i></a></strong>
-      <script>
+      <!-- <strong> <a style="color:#e74d3c; font-weight:600"> • <i class="total_citation_mtl" data-citation="{{ link.citation }}"></i> <i style="color:#e74d3c; font-weight:600"> Citations </i></a></strong> -->
+      <!-- <script>
         $(document).ready(function () {
             var gsDataBaseUrl = 'https://raw.githubusercontent.com/song-chen1/song-chen1.github.io/';
             $.getJSON(gsDataBaseUrl + "google-scholar-stats/gs_data.json", function (data) {
@@ -76,7 +76,7 @@ The code is written in Markdown and is intended to be used in a website or web p
                 });
             });
         });
-      </script>
+      </script> -->
       {% endif %}
     </div>
   </div>
