@@ -4,7 +4,12 @@ layout: homepage
 
 <h1 id="about-me"></h1>
 
-<h2 style="margin: 60px 0px 10px;">Short Bio</h2>
+<h2 style="margin: 60px 0px 10px;">Short Bio
+  <div class="abbr" style="display: inline-block; position: relative; padding-left: 10px; vertical-align: middle;">
+    <img src="/assets/img/favicon.png" class="teaser img-fluid z-depth-1" style="width: 30px; height: auto;">
+  </div>
+</h2>
+
 
 I am currently a second-year student in the Sc.M. of Computer Science program at [Brown University](https://www.brown.edu/), working with the [ATLAS Group](https://atlas.cs.brown.edu/) under the mentorship of [Nikos Vasilakis](https://nikos.vasilak.is/) and the [Brown HCI Group](https://hci.cs.brown.edu/) under the mentoship of [Jeff Huang](https://jeffhuang.com/). Previously, I received the B.S. degree in Computer Science and Cognitive Science from the [University of Michigan, Ann Arbor](https://umich.edu/).
 
