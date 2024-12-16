@@ -2,6 +2,9 @@ main:
   - title: "Bio"
     url: ./#about-me
 
+  - title: "Research Interest"
+    url: ./#Research Interest
+
   - title: "Publications"
     url: ./#publications
 
