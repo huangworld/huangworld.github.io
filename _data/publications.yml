@@ -17,7 +17,7 @@ main:
     pdf: "https://dl.acm.org/doi/pdf/10.1145/3586183.3606720"
     # page: https://dl.acm.org/doi/pdf/10.1145/3586183.3606720
     bibtex: ./assets/files/MIWA.txt
-    image: ./assets/files/MIWA.png
+    image: ./assets/files/MIWA_thumbnail.jpg
     # citation: sf-0AGoAAAAJ:u5HHmVD_uO8C
     notes: Published
 
