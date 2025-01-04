@@ -6,7 +6,7 @@ main:
     pdf: ./assets/files/irchiver.pdf
     # page: https://dl.acm.org/doi/pdf/10.1145/3586183.3606720
     # bibtex: ./assets/files/multi.txt
-    image: ./assets/files/irchiver_search.jpeg
+    image: ./assets/files/irchiver_workflow.jpg
     # citation: sf-0AGoAAAAJ:u5HHmVD_uO8C
     notes: Accepted
   
