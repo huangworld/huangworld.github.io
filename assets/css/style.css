@@ -1,0 +1,97 @@
+:root {
+    /* Color palette */
+    --bg-color: #F7F9FC; /* soft neutral background */
+    --text-color: #333333;
+    --text-light: #666666;
+    --accent-bg: #C8E6C9;  /* light leafy green */
+    --accent-text: #2E8B57; /* main green for text */
+    --accent-hover: #1f6b42;
+
+    /* Typography scale */
+    --h1-size: 2rem;   /* ~32px */
+    --h2-size: 1.625rem; /* ~26px */
+    --body-size: 1.125rem; /* 18px (already set on body) */
+    --meta-size: 1rem;  /* 16px */
+
+    /* Spacing */
+    --space-1: 0.5rem;
+    --space-2: 1rem;
+    --space-3: 2rem;
+}
+
+/* -------- Typography -------- */
+h1 {
+    font-size: var(--h1-size);
+    font-weight: 600;
+    color: var(--accent-text);
+    margin: 0 0 var(--space-2);
+}
+
+h2 {
+    font-size: var(--h2-size);
+    font-weight: 600;
+    color: var(--accent-text);
+    margin: var(--space-3) 0 var(--space-1);
+}
+
+p, ul, ol {
+    font-size: var(--body-size);
+    color: var(--text-color);
+    margin: 0 0 var(--space-2);
+}
+
+small {
+    font-size: var(--meta-size);
+}
+
+/* Links */
+a {
+    color: var(--accent-text);
+    text-decoration: none;
+}
+a:hover {
+    color: var(--accent-hover);
+}
+
+/* Wrapper spacing */
+.wrapper {
+    width: 960px;
+    margin: calc(var(--space-3) * 2) auto;
+}
+
+/* Navbar refresh */
+.navbar {
+    background: var(--bg-color);
+    border-bottom: 1px solid #DDE4EC; /* subtle line */
+    padding: var(--space-1) 0;
+}
+.navbar a {
+    color: var(--text-color);
+    padding: var(--space-1) var(--space-2);
+}
+.navbar a:hover {
+    background: var(--accent-bg);
+    color: #fff;
+}
+
+/* Publication layout */
+.pub-row {
+    display: flex;
+    gap: var(--space-2);
+    align-items: flex-start;
+}
+.pub-row .abbr {
+    width: 256px;
+    flex-shrink: 0;
+}
+.pub-row .col-sm-8,.pub-row .col-sm-9 {
+    flex: 1;
+}
+
+/* Avatar sizing */
+.profile-column .image.avatar img {
+    max-width: 160px;
+    height: auto;
+}
+
+body { background: var(--bg-color); padding: 0px; font: 18px/1.5 'Lora', monospace; color: var(--text-color); font-weight: 400; margin: 0; }

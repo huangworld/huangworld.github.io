@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <title>Zhicheng Huang's Homepage</title>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, shrink-to-fit=no, viewport-fit=cover" />
+    <meta name="description" content="Zhicheng Huang">
+    <meta name="keywords" content="zhicheng huang, huang zhicheng, zhichenghuang, huangzhicheng">
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Zhicheng Huang | UCSD">
+    <meta property="og:url" content="https://minimal-light-theme.yliu.me/">
+    <meta property="og:site_name" content="Zhicheng Huang | UCSD">
+    <meta property="og:description" content="Zhicheng Huang is currently a second-year student in the Sc.M. of Computer Science program at Brown University, working with the ATLAS Group under the mentorship of Nikos Vasilakis and the Brown HCI Group under the mentoshipt of Jeff Huang. Previously, he received the B.S. degree in Computer Science and Cognitive Science from the University of Michigan, Ann Arbor. Instead of relying on centralized platforms to manage users' data, He believes in an information ecology where users could easily (1) Access, (2) Manage, (3) Make Sense Of, and (4) Process their own data. Moreover, the tools people use to achieve this ecosystem should be user-centric, require zero to minimal programming, and contribute to the overall conviviality.">
+    <meta property="og:locale" content="default">
+    <meta property="og:image" content="./assets/img/avatar.jpg">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Zhicheng Huang | UCSD">
+    <meta name="twitter:description" content="Zhicheng Huang is currently a second-year student in the Sc.M. of Computer Science program at Brown University, working with the ATLAS Group under the mentorship of Nikos Vasilakis and the Brown HCI Group under the mentoshipt of Jeff Huang. Previously, he received the B.S. degree in Computer Science and Cognitive Science from the University of Michigan, Ann Arbor. Instead of relying on centralized platforms to manage users' data, He believes in an information ecology where users could easily (1) Access, (2) Manage, (3) Make Sense Of, and (4) Process their own data. Moreover, the tools people use to achieve this ecosystem should be user-centric, require zero to minimal programming, and contribute to the overall conviviality.">
+    <meta name="twitter:image" content="./assets/img/avatar.jpg">
+
+    <link rel="canonical" href="https://minimal-light-theme.yliu.me/"/>
+    <link rel="icon" media="(prefers-color-scheme:dark)" href="./assets/img/favicon-dark.png" type="image/png" />
+    <link rel="icon" media="(prefers-color-scheme:light)" href="./assets/img/favicon.png" type="image/png" />
+    <link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/academicons/1.8.6/css/academicons.min.css integrity="sha256-uFVgMKfistnJAfoCUQigIl+JfUaP47GrRKjf6CTPVmw=" crossorigin=anonymous>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="./assets/css/style.css">
+    <link rel="stylesheet" href="./assets/css/pub.css">
+    <link rel="stylesheet" href="./assets/css/inline.css">
+    
+    <script src="./assets/js/github-stars.js"></script>
+    <script type="text/javascript" src="./assets/js/jquery.js"></script>
+    <script src="./assets/js/favicon-switcher.js" type="application/javascript"></script>
+    
+    <script type="text/javascript">
+      function toggle_vis(id) {
+          var e = document.getElementById(id);
+          if (e.style.display == 'none')
+              e.style.display = 'inline';
+          else
+              e.style.display = 'none';
+      }
+      
+      function copyEmail(event) {
+          const email = 'zhichenghuang@ucsd.edu';
+          const linkElement = event.currentTarget; // The <a> tag that was clicked
+          const originalContent = linkElement.innerHTML;
+
+          // Use Clipboard API if available
+          if (navigator.clipboard) {
+              navigator.clipboard.writeText(email).then(() => {
+                  // On success, show confirmation
+                  linkElement.innerHTML = `<i class="fas fa-check" style="color: #2E8B57;"></i><span style="margin-left: 8px; color: #2E8B57; font-size: 15px; font-weight: bold;">Copied!</span>`;
+                  
+                  // Revert back after 2 seconds
+                  setTimeout(() => {
+                      linkElement.innerHTML = originalContent;
+                  }, 2000);
+              }).catch(err => {
+                  console.error('Could not copy email with Clipboard API: ', err);
+                  alert('Failed to copy. Please manually copy: ' + email);
+              });
+          } else {
+              // Fallback for older browsers
+              try {
+                  const textArea = document.createElement('textarea');
+                  textArea.value = email;
+                  // Make the textarea invisible
+                  textArea.style.position = 'fixed';
+                  textArea.style.top = '-9999px';
+                  textArea.style.left = '-9999px';
+                  document.body.appendChild(textArea);
+                  textArea.select();
+                  document.execCommand('copy');
+                  document.body.removeChild(textArea);
+                  
+                  // Show confirmation
+                  linkElement.innerHTML = `<i class="fas fa-check" style="color: #2E8B57;"></i><span style="margin-left: 8px; color: #2E8B57; font-size: 15px; font-weight: bold;">Copied!</span>`;
+                  
+                  // Revert back after 2 seconds
+                  setTimeout(() => {
+                      linkElement.innerHTML = originalContent;
+                  }, 2000);
+
+              } catch (err) {
+                  console.error('Fallback copy failed: ', err);
+                  alert('Failed to copy. Please manually copy: ' + email);
+              }
+          }
+      }
+   </script>
+
+   <script>
+
+   </script>
+   
+
+  </head>
+  <body>
+
+
+    <script src="./assets/js/vanilla-back-to-top.min.js"></script>
+    <script>addBackToTop({
+        backgroundColor: '#fff',
+        innerHTML: 'Back to Top',
+        textColor: '#333'
+      })
+    </script>
+    
+    <div class="wrapper">
+      <h1 id="bio"></h1>
+      <h2 class="bio-header">Bio</h2>
+      <table class="intro-table">
+        <tr>
+          <td class="profile-column">
+            <h3>Zhicheng Huang</h3>
+        <a class="image avatar"><img src="./assets/img/avatar.jpg" alt="avatar" /></a>
+        <div class="social-icons">
+              <a href="https://scholar.google.com/citations?user=_msJ5AcAAAAJ&hl=en">
+                <i class="ai ai-google-scholar"></i>
+              </a>  
+              <a href="https://x.com/HuangOfAKind">
+                <i class="fa-brands fa-x-twitter"></i>
+              </a>
+              <a href="https://www.linkedin.com/in/zhichenghuang/">
+          <i class="fab fa-linkedin"></i>
+        </a>
+              <a href="#" onclick="copyEmail(event); return false;" title="Copy email address">
+                <i class="fas fa-envelope"></i>
+              </a>
+        </div>
+        <br>
+          </td>
+          <td class="bio-column">
+            <p>I am a 1st-year PhD student advised by Haijun Xia at the <code>/UC San Diego/Cognitive Science/Design Lab/Foundation Interface Lab.</code></p>
+            <p class="past">Previously, I was in the Sc.M. program in Computer Science at Brown University where I worked with Jeff Huang at the HCI Lab and Nikos Vasilakis at the ATLAS group. I received my B.S. degree in Computer Science and Cognitive Science from the University of Michigan, Ann Arbor, working with Xinyu Wang.</p>            
+            <!-- <span class="marker-highlight">highlighted text</span>
+            <span class="marker-highlight">2</span> -->
+<!-- <span class="rn-underline">scribble underline</span>
+<span class="rn-box">boxed</span>
+<span class="rn-circle">circled</span>
+<span class="rn-bracket">bracketed</span> -->
+          </td>
+        </tr>
+      </table>
+
+      <section>
+        <h1 id="research-interest"></h1>
+        <h2 id="research-interest" class="section-header">Research Interest</h2>
+        <p>I believe in a convivial information ecosystem where people can easily (1) <span class="marker-highlight">curate</span>, (2) <span class="marker-highlight">make sense of</span>, and (3) <span class="marker-highlight">manipulate</span> any information that matters to them.</p>
+        <p>My research spans across Human-Computer Interaction, Programming Languages, and Systems.</p>
+
+<section id="publications">
+    <h2 class="section-header">Publications <a href="https://scholar.google.com/citations?user=_msJ5AcAAAAJ&hl=en" target="_blank" class="header-link">[Google Scholar]</a></h2>
+
+<div class="publications">
+<table class="publications-table">
+
+<tr>
+  <td class="teaser-cell">
+    <img src="assets/files/fractal_overview.png" class="teaser" />
+    <div class="badge">NSDI 2026</div>
+  </td>
+  <td class="description-cell">
+      <div class="title"><a href="assets/files/fractal_tech.pdf">Fractal: Fault-Tolerant Shell-Script Distribution</a></div>
+      <div class="author">Zhicheng Huang*, Ramiz Dundar*, Yizheng Xie, Konstantinos Kallas, Nikos Vasilakis</div>
+      <div class="periodical"><em>The 23rd USENIX Symposium on Networked Systems Design and Implementation</em>
+      </div>
+    <div class="links">
+       
+    <i class="published">Conditionally Accepted (forthcoming)</i>
+      
+    </div>
+  </td>
+</tr>
+
+<tr>
+  <td class="teaser-cell">
+    <img src="./assets/files/irchiver_workflow.jpg" class="teaser" />
+    <div class="badge">CHIIR 2025</div>
+  </td>
+  <td class="description-cell">
+      <div class="title"><a href="https://dl.acm.org/doi/10.1145/3698204.3716459">IRCHIVER: An Information-Centric Personal Web Archive for Revisiting Past Online Sensemaking Tasks</a></div>
+      <div class="author">Zhicheng Huang, Jeff Huang</div>
+      <div class="periodical"><em>The 2025 ACM SIGIR Conference on Human Information Interaction and Retrieval</em>
+      </div>
+    <div class="links">
+       
+      <a href="https://dl.acm.org/doi/10.1145/3698204.3716459" class="btn btn-sm z-depth-0" role="button" target="_blank">PDF</a>      
+    </div>
+  </td>
+</tr>
+
+<tr>
+  <td class="teaser-cell">
+    <img src="./assets/files/MIWA_thumbnail.jpg" class="teaser" />
+    <div class="badge">UIST 2023</div>
+  </td>
+  <td class="description-cell">
+      <div class="title"><a href="https://dl.acm.org/doi/pdf/10.1145/3586183.3606720">MIWA: Mixed-Initiative Web Automation for Better User Control and Confidence</a></div>
+      <div class="author">Weihao Chen, Xiaoyu Liu, Jiacheng Zhang, Ian Iong Lam, Zhicheng Huang, Rui Dong, Xinyu Wang, Tianyi Zhang</div>
+      <div class="periodical"><em>Proceedings of the ACM Symposium on User Interface Software and Technology, 2023</em>
+      </div>
+    <div class="links">
+       
+      <a href="https://dl.acm.org/doi/pdf/10.1145/3586183.3606720" class="btn btn-sm z-depth-0" role="button" target="_blank">PDF</a>
+      
+       
+      <a href="./assets/files/MIWA.txt" class="btn btn-sm z-depth-0" role="button" target="_blank">BibTex</a>        
+        </div>
+  </td>
+</tr>
+
+<tr>
+  <td class="teaser-cell">
+    <img src="./assets/files/WebRobot.jpg" class="teaser" />
+    <div class="badge">PLDI 2022</div>
+  </td>
+  <td class="description-cell">
+      <div class="title"><a href="https://arxiv.org/pdf/2203.09993">WebRobot: web robotic process automation using interactive programming-by-demonstration</a></div>
+      <div class="author">Rui Dong, Zhicheng Huang, Ian Iong Lam, Yan Chen, Xinyu Wang</div>
+      <div class="periodical"><em>Proceedings of the ACM SIGPLAN Conference on Programming Language Design and Implementation, 2022</em>
+      </div>
+    <div class="links">
+       
+      <a href="https://arxiv.org/pdf/2203.09993" class="btn btn-sm z-depth-0" role="button" target="_blank">PDF</a>
+      
+       
+      <a href="./assets/files/WebRobot.txt" class="btn btn-sm z-depth-0" role="button" target="_blank">BibTex</a>
+            
+    </div>
+  </td>
+</tr>
+
+</table>
+</div>
+</section>
+      <br>
+      <br>
+      
+      
+      </section>
+      <div class="footer-wrapper">
+        <div class="footer-text">
+        <p>
+        <small>
+        
+        
+        </small>
+        </p>
+        </div>
+        <br>
+        <br>
+        <p><span class="footer-heart">♥ </span>May all the beers be fresh and chilled <span class="footer-heart">♥</span></p>
+      </div>
+    </div>
+    <script src="./assets/js/scale.fix.js"></script>
+    <!-- RoughNotation support -->
+    <script type="module" src="https://unpkg.com/rough-notation?module"></script>
+    <script type="module">
+      import { annotate, annotationGroup } from 'https://unpkg.com/rough-notation?module';
+
+      // --- Setup ---
+      const accBg = getComputedStyle(document.documentElement).getPropertyValue('--accent-bg') || '#C8E6C9';
+      const accText = getComputedStyle(document.documentElement).getPropertyValue('--accent-text') || '#2E8B57';
+
+      // --- Step 1: DOM Manipulations ---
+
+      // Auto-highlight project titles (text before colon, if present)
+      document.querySelectorAll('.publications .title').forEach(titleDiv => {
+          const titleText = titleDiv.textContent.trim();
+          const colonIndex = titleText.indexOf(':');
+          
+          if (colonIndex > 0) {
+              // If there's a colon, highlight the system name (text before colon)
+              const projectName = titleText.substring(0, colonIndex).trim();
+              const restOfTitle = titleText.substring(colonIndex + 1).trim();
+              titleDiv.innerHTML = `<span class="marker-highlight">${projectName}</span> : ${restOfTitle}`;
+          } else {
+              // If no colon, check if the first few words could be a system name
+              // Look for common patterns: all caps, CamelCase, or short distinctive words
+              const words = titleText.split(' ');
+              const firstWord = words[0];
+              
+              // Highlight first word if it looks like a system name:
+              // - All uppercase (e.g., "MIWA", "IRCHIVER") 
+              // - CamelCase (e.g., "WebRobot", "AutoComplete")
+              // - Single distinctive word followed by specific keywords
+              const isSystemName = (
+                  (firstWord.length > 2 && firstWord === firstWord.toUpperCase()) || // All caps
+                  (firstWord.length > 3 && /^[A-Z][a-z]+[A-Z]/.test(firstWord)) || // CamelCase
+                  (words.length > 1 && firstWord.length <= 8 && /^[A-Z]/.test(firstWord) && 
+                   (words[1].toLowerCase() === 'for' || words[1] === ':' || words[1].toLowerCase() === 'enables'))
+              );
+              
+              if (isSystemName) {
+                  const restOfTitle = words.slice(1).join(' ');
+                  titleDiv.innerHTML = `<span class="marker-highlight">${firstWord}</span> ${restOfTitle}`;
+              }
+              // If no system name is detected, leave the title as-is (no highlighting)
+          }
+      });
+
+      // Auto-underline author name
+      document.querySelectorAll('.publications .author').forEach(authorDiv => {
+          const authorName = "Zhicheng Huang";
+          if (authorDiv.textContent.includes(authorName)) {
+              authorDiv.innerHTML = authorDiv.innerHTML.replace(
+                  authorName,
+                  `<span class="rn-underline" data-color="${accBg}">${authorName}</span>`
+              );
+          }
+      });
+
+      // --- Step 2: Annotate all static rn-* elements ---
+      const typeMap = ['highlight','underline','box','circle','strike-through','crossed-off','bracket'];
+      const allAnnos = [];
+      typeMap.forEach(type=>{
+          document.querySelectorAll(`.rn-${type}`).forEach(el=>{
+              const isUnderline = type === 'underline';
+              const elColor = el.dataset.color || (isUnderline ? accBg : accText);
+
+              const anno = annotate(el, {
+                  type,
+                  color: elColor, // Boxes get darker green, underlines get lighter green
+                  strokeWidth: isUnderline ? 2 : 3,
+                  padding: isUnderline ? 1 : 4,
+                  iterations: 2,
+                  multiline: type === 'highlight',
+                  animationDuration: 0,
+                  animate: false
+              });
+              allAnnos.push(anno);
+          });
+      });
+
+      // Show annotations individually to respect animation settings
+      allAnnos.forEach(a => a.show());
+
+    </script>
+  </body>
+</html> 

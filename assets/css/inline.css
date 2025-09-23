@@ -1,0 +1,619 @@
+/* Styles for the "Back to Top" button */
+#back-to-top {
+    background-color: var(--bg-color);
+    border: 1px solid var(--accent-text);
+    color: var(--accent-text);
+    border-radius: 4px;
+    font-size: 15px;
+    width: 120px;
+    text-align: center;
+    line-height: 30px;
+    height: 30px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: all 0.2s ease-in-out;
+}
+#back-to-top:hover {
+    background-color: var(--accent-bg);
+    transform: translateY(-2px);
+}
+
+/* Header styles */
+header position {
+    font-size: 1.10rem;
+}
+
+/* Social icon styles */
+.social-icons {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.social-icons a {
+    margin: 0;
+}
+
+.social-icons a:first-child {
+    text-align: left;
+}
+
+.social-icons a:last-child {
+    text-align: right;
+}
+
+.social-icons a:not(:first-child):not(:last-child) {
+    text-align: center;
+}
+
+.social-icons .ai-google-scholar {
+    font-size: 1.2rem;
+}
+
+/* Section H2 styles */
+h2.short-bio {
+    margin-top: 0;
+    margin-bottom: var(--space-1);
+}
+
+h2.publications {
+    margin: 30px 0px -15px;
+}
+
+h2.contact {
+    margin: 30px 0px 10px;
+}
+
+/* Abbreviation styles */
+.abbr {
+    display: inline-block;
+    position: relative;
+    padding-left: 10px;
+    vertical-align: middle;
+}
+
+.abbr img.teaser {
+    width: 30px;
+    height: auto;
+}
+
+/* Publication styles */
+temp {
+    font-size: 15px;
+}
+
+.publications a {
+    font-size: 15px;
+}
+
+.pub-row .abbr {
+    position: relative;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+.pub-row .col-sm-9 {
+    position: relative;
+    padding-right: 15px;
+    padding-left: 20px;
+}
+
+p.past {
+    color: #888888;
+}
+
+/* Terminal-style code snippet */
+.bio-column code{
+    background: #f0f7f0;           /* very light green background */
+    color: var(--accent-text);     /* consistent with palette */
+    font-family: "SF Mono", "Monaco", "Inconsolata", "Roboto Mono", "Ubuntu Mono", monospace;
+    font-weight: 500;
+    font-size: 14px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    border: 1.5px solid #4a7c59;   /* darker green border */
+    position: relative;
+    display: inline-block;
+    letter-spacing: 0.5px;
+    box-shadow: 0 1px 2px rgba(46, 139, 87, 0.1);
+}
+
+.bio-column code::before {
+    content: "$ ";
+    color: #4a7c59;                /* darker green for more visibility */
+    font-weight: bold;
+}
+
+/* Align Short Bio heading with avatar */
+h2.short-bio {
+    margin-top: 0;
+    margin-bottom: var(--space-1);
+}
+
+/* Ensure table cells align at top */
+.intro-table td {
+    vertical-align: top;
+}
+
+.links .btn {
+    font-size: 12px;
+}
+
+.links .accepted {
+    color: #e74d3c;
+}
+
+.links .published {
+    color: #000000;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    padding-top: 0.1rem;
+    padding-bottom: 0.1rem;
+    font-size: 12px;
+}
+
+/* Footer styles */
+.footer-wrapper {
+    text-align: center;
+}
+.footer-text {
+    font: 12px/1.2 Proxima Nova, monospace;
+}
+
+.footer-heart {
+    color: var(--accent-text);
+}
+
+/* Bio main header */
+.bio-header{
+    font-size: var(--h1-size);
+    font-weight: 600;
+    color: var(--accent-text);
+    margin-bottom: var(--space-2);
+}
+
+.profile-column{
+    display:flex;
+    flex-direction:column;
+    align-items:flex-start;   /* left align items */
+    gap:8px;                  /* reduced spacing between items */
+    padding-right:60px;       /* increased margin between columns */
+}
+
+.profile-column h3{
+    margin:0;                 /* remove extra space */
+}
+
+/* ensure right-hand bio starts at same top line */
+.bio-column{
+    padding-top:0;            /* overrides table cell default */
+    padding-left:40px;        /* increased margin between columns */
+}
+
+
+/* --- hand-drawn underline ----------------------------- */
+.scribble{
+    position:relative;
+    display:inline-block;       /* make width = text */
+  }
+  .scribble::after{
+    content:"";
+    position:absolute;
+    left:0; right:0; bottom:0.18em;   /* lift a little off baseline */
+    height:6px;                       /* stroke thickness */
+    background-repeat:repeat-x;
+    background-size:35px 6px;         /* wavelength matches curve */
+    pointer-events:none;              /* don’t block clicks */
+  
+    /* inline SVG squiggle (darken/lighten to taste) */
+    background-image:url("data:image/svg+xml,\
+    %3Csvg xmlns='http://www.w3.org/2000/svg' width='35' height='6' viewBox='0 0 35 6'%3E\
+      %3Cpath d='M1 3 C4 6, 7 0, 10 3 S16 6, 19 3 S25 0, 28 3 S32 6, 35 3' \
+            stroke='%232E8B57' stroke-width='3' fill='none' stroke-linecap='round'/%3E\
+    %3C/svg%3E");
+  }
+
+/* === Marker-highlight effect (brush) === */
+.marker-highlight{
+    background:url("https://s2.svgbox.net/pen-brushes.svg?ic=brush-1&color=c8e6c9") no-repeat;
+    background-size:100% 100%;
+    margin:-2px -4px;
+    padding:2px 4px;
+}
+
+/* === Scribble underline effect === */
+.scribble-underline{
+    position:relative;
+    display:inline-block;
+    text-decoration:none;          /* remove default straight underline */
+}
+.scribble-underline::after{
+    content:"";
+    position:absolute;
+    left:0;right:0;
+    bottom:0.05em;
+    height:6px;
+    background-repeat:repeat-x;
+    background-size:70px 6px;      /* lower frequency (longer wavelength) */
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='70' height='6' viewBox='0 0 70 6'%3E%3Cpath d='M1 3 C4 6,7 0,10 3 S16 6,19 3 S25 0,28 3 S32 6,35 3' stroke='%232E8B57' stroke-width='3' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    pointer-events:none;
+}
+
+/* Publications table layout */
+.publications-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 32px; /* reduce vertical gap between rows and below header */
+    margin-top: -40px; /* offset half the vertical spacing so first row sits closer */
+}
+
+.teaser-cell {
+    width: 256px;
+    vertical-align: middle;
+    padding-right: 20px;
+    position: relative;
+}
+
+.description-cell {
+    vertical-align: middle;
+    padding-left: 0;
+}
+
+.teaser-cell .teaser {
+    width: 256px;
+    height: 150px;
+    object-fit: contain;
+    border-radius: 8px;
+    display: block;
+}
+
+.teaser-cell .badge {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    background-color: var(--accent-text);
+    color: white;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+/* Publications visual hierarchy */
+.publications .title {
+    font-size: 17px;
+    font-weight: 500;
+    line-height: 1.3;
+    margin-bottom: 8px;
+    color: var(--text-color);
+}
+
+.publications .title a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.publications .title a:hover {
+    color: var(--accent-text);
+}
+
+.publications .author {
+    font-size: 15px;
+    color: #666;
+    margin-bottom: 6px;
+    line-height: 1.2;
+}
+
+.publications .periodical {
+    font-size: 14px;
+    color: #888;
+    margin-bottom: 8px;
+    line-height: 1.2;
+}
+
+.publications .links {
+    margin-top: 8px;
+}
+
+/* Offset for anchored headings */
+section[id], #bio, #research-interest {
+    scroll-margin-top: 20px;
+}
+
+/* === Consistent Section Headers === */
+.section-header{
+    font-size: var(--h1-size);
+    font-weight: 600;
+    color: var(--accent-text);
+    /* More whitespace before sections, less after header */
+    margin-top: calc(var(--space-3) * 1.2);  /* increase top space */
+    margin-bottom: var(--space-1);           /* decrease space below header */
+}
+.header-link{
+    font-size: var(--meta-size);
+    font-weight: 400;
+    vertical-align: middle;
+}
+
+/* Extra spacing between Research Interest and Publications */
+#publications {
+    padding-top: var(--space-1);
+}
+
+/* Fix mobile touch jitter - Safari specific */
+html {
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    touch-action: manipulation;
+}
+
+body {
+    touch-action: manipulation;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    -webkit-overflow-scrolling: touch;
+}
+
+* {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    box-sizing: border-box;
+}
+
+/* Prevent zoom on input focus (Safari) */
+input, textarea, select {
+    font-size: 16px !important;
+}
+
+/* Allow text selection for content areas */
+p, .bio-column, .publications .title, .publications .author, .publications .periodical, h1, h2, h3 {
+    -webkit-user-select: text;
+    -khtml-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+}
+
+/* Profile photo and social icons alignment */
+.profile-column .image.avatar img {
+    max-width: 160px;
+    width: 160px;
+    height: auto;
+}
+
+.social-icons {
+    width: 160px; /* Match profile photo width */
+    display: flex;
+    justify-content: space-between;
+}
+
+
+
+/* ===== MOBILE RESPONSIVE STYLES ===== */
+@media screen and (max-width: 768px) {
+
+    
+    /* Mobile wrapper adjustments */
+    .wrapper {
+        width: 82%;
+        margin: 40px auto;
+        padding: 0 25px;
+    }
+    
+    /* Mobile bio section - convert table to stacked layout */
+    .intro-table {
+        display: block;
+        width: 100%;
+    }
+    
+    .intro-table tr {
+        display: block;
+        width: 100%;
+    }
+    
+    .intro-table td {
+        display: block;
+        width: 100%;
+        padding: 0;
+        margin-bottom: 30px;
+    }
+    
+    .profile-column {
+        text-align: center;
+        padding-right: 0;
+        align-items: center;
+        margin-bottom: 25px;
+    }
+    
+    .profile-column h3 {
+        font-size: 28px;
+        margin-bottom: 15px;
+    }
+    
+    .profile-column .image.avatar img {
+        width: 180px;
+        max-width: 180px;
+        height: auto;
+        margin-bottom: 20px;
+    }
+    
+    .social-icons {
+        width: 180px; /* Match mobile profile photo width */
+        justify-content: space-between;
+        margin: 0 auto;
+    }
+    
+    .social-icons a {
+        font-size: 24px;
+    }
+    
+    .bio-column {
+        padding-left: 0;
+        text-align: left;
+    }
+    
+    .bio-column p {
+        font-size: 16px;
+        line-height: 1.6;
+        margin-bottom: 18px;
+    }
+    
+    .bio-column code {
+        font-size: 13px;
+        padding: 6px 10px;
+        display: inline-block;
+        word-break: break-all;
+        line-height: 1.4;
+    }
+    
+    /* Mobile typography adjustments */
+    .bio-header, .section-header {
+        font-size: 24px;
+        text-align: center;
+        margin-bottom: 25px;
+    }
+    
+    /* Mobile publications layout */
+    .publications-table {
+        display: block;
+        border-spacing: 0;
+        margin-top: 0;
+    }
+    
+    .publications-table tr {
+        display: block;
+        margin-bottom: 35px;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 30px;
+    }
+    
+    .publications-table tr:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+    }
+    
+    .teaser-cell {
+        display: block;
+        width: 100%;
+        text-align: center;
+        padding: 0 0 20px 0;
+        position: relative;
+    }
+    
+    .teaser-cell .teaser {
+        width: 100%;
+        max-width: 300px;
+        height: auto;
+        margin: 0 auto;
+    }
+    
+    .teaser-cell .badge {
+        top: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 12px;
+        padding: 4px 8px;
+    }
+    
+    .description-cell {
+        display: block;
+        width: 100%;
+        padding: 0;
+        text-align: left;
+    }
+    
+    .publications .title {
+        font-size: 18px;
+        line-height: 1.4;
+        margin-bottom: 12px;
+        text-align: center;
+    }
+    
+    .publications .author {
+        font-size: 15px;
+        margin-bottom: 8px;
+        text-align: center;
+    }
+    
+    .publications .periodical {
+        font-size: 14px;
+        margin-bottom: 15px;
+        text-align: center;
+        line-height: 1.4;
+    }
+    
+    .publications .links {
+        text-align: center;
+        margin-top: 15px;
+    }
+    
+    .publications .links .btn {
+        display: inline-block;
+        margin: 5px 8px;
+        padding: 8px 16px;
+        font-size: 13px;
+        border-radius: 6px;
+        background-color: var(--accent-bg);
+        color: var(--accent-text);
+        border: 1px solid var(--accent-text);
+        transition: all 0.2s ease;
+    }
+    
+    .publications .links .btn:hover {
+        background-color: var(--accent-text);
+        color: white;
+    }
+    
+    /* Mobile research interest section */
+    #research-interest p {
+        font-size: 16px;
+        line-height: 1.6;
+        text-align: left;
+        margin-bottom: 18px;
+    }
+    
+    /* Mobile footer */
+    .footer-wrapper {
+        margin-top: 40px;
+        padding: 20px 0;
+    }
+    
+    .footer-wrapper p {
+        font-size: 14px;
+        line-height: 1.5;
+    }
+    
+    /* Ensure proper spacing for anchored sections on mobile */
+    section[id], #bio, #research-interest {
+        scroll-margin-top: 20px;
+    }
+}
+
+/* Tablet adjustments */
+@media screen and (max-width: 1024px) and (min-width: 769px) {
+    .wrapper {
+        width: 85%;
+        margin: 60px auto;
+    }
+    
+    .profile-column {
+        padding-right: 40px;
+    }
+    
+    .bio-column {
+        padding-left: 20px;
+    }
+    
+    .teaser-cell {
+        width: 200px;
+    }
+    
+    .teaser-cell .teaser {
+        width: 200px;
+        height: 120px;
+    }
+}

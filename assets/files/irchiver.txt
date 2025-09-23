@@ -1,0 +1,7 @@
+@inproceedings{huang2025irchiver,
+  title={IRCHIVER: An Information-Centric Personal Web Archive for Revisiting Past Online Sensemaking Tasks},
+  author={Huang, Zhicheng and Huang, Jeff},
+  booktitle={Proceedings of the 2025 ACM SIGIR Conference on Human Information Interaction and Retrieval},
+  pages={231--246},
+  year={2025}
+}
