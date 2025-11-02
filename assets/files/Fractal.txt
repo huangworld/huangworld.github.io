@@ -1,0 +1,9 @@
+@inproceedings{fractal:nsdi:2026,
+ author = {Zhicheng Huang and Ramiz Dundar and Yizheng Xie and Konstantinos Kallas and Nikos Vasilakis},
+ title = {Fractal: Fault-Tolerant Shell-Script Distribution},
+ booktitle = {23rd USENIX Symposium on Networked Systems Design and Implementation (NSDI 26)},
+ year = {2026},
+ address = {Renton, WA},
+ publisher = {USENIX Association},
+ month = may
+}
