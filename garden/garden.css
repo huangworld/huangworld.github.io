@@ -94,7 +94,47 @@ main {
     text-decoration: none;
 }
 .tabbar a.active { color: var(--accent); }
-.tab-icon { font-size: 1.15rem; line-height: 1; }
+.tab-icon {
+    width: 22px;
+    height: 22px;
+    object-fit: contain;
+    filter: grayscale(1) opacity(0.55);
+    transition: filter 0.15s ease;
+}
+.tabbar a.active .tab-icon { filter: none; }
+
+.name-icon {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+    vertical-align: -0.22rem;
+    margin-right: 0.35rem;
+}
+
+.overdue-icon {
+    width: 14px;
+    height: 14px;
+    object-fit: contain;
+    vertical-align: -0.12rem;
+    margin-right: 0.25rem;
+}
+
+.btn-icon {
+    width: 18px;
+    height: 18px;
+    object-fit: contain;
+    vertical-align: -0.22rem;
+    margin-right: 0.35rem;
+}
+
+.empty-icon {
+    width: 56px;
+    height: 56px;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto 0.75rem;
+    filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.12));
+}
 
 .banner {
     max-width: 560px;
@@ -196,7 +236,12 @@ label.field .label-text {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.4rem;
+}
+.thumb.placeholder img {
+    width: 34px;
+    height: 34px;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.15));
 }
 
 /* ---- Today / list rows ---- */

@@ -86,7 +86,13 @@ a:hover { color: var(--accent-hover); }
     transform: translateY(-1px);
 }
 
-.card .emoji { font-size: 1.6rem; line-height: 1; }
+.card .emoji {
+    width: 44px;
+    height: 44px;
+    object-fit: contain;
+    flex-shrink: 0;
+    filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.12));
+}
 .card .card-title { font-weight: 600; }
 .card .card-desc {
     color: var(--text-light);

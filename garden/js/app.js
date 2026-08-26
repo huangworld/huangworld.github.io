@@ -2,6 +2,7 @@ import { PHOTO_DIR, RAW_BASE, OWNER, REPO, BRANCH, DATA_PATH } from "./config.js
 import * as gh from "./gh.js";
 import { searchTaxa, fetchDescription, debounce } from "./lookup.js";
 import { compress } from "./image.js";
+import { plantIcon, iconUrl, UI } from "./icons.js";
 
 const $main = document.getElementById("main");
 const $title = document.getElementById("view-title");
@@ -96,7 +97,20 @@ function thumb(plant) {
     const url = photoUrl(plant);
     return url
         ? el("img", { class: "thumb", src: url, alt: "", loading: "lazy" })
-        : el("div", { class: "thumb placeholder" }, "🌱");
+        : el("div", { class: "thumb placeholder" },
+            el("img", { src: iconUrl(plantIcon(plant.name, plant.kind)), alt: "" }));
+}
+
+function nameIcon(plant) {
+    return el("img", { class: "name-icon", src: iconUrl(plantIcon(plant.name, plant.kind)), alt: "" });
+}
+
+function uiIcon(name, cls) {
+    return el("img", { class: cls, src: iconUrl(UI[name]), alt: "" });
+}
+
+function emptyState(icon, ...msg) {
+    return el("div", { class: "empty-state" }, uiIcon(icon, "empty-icon"), ...msg);
 }
 
 // ---------- data loading ----------
@@ -206,7 +220,7 @@ function waterButton(plant) {
                     if (p) p.log.unshift({ date: todayStr(), note: "" });
                     return d;
                 }, `garden: water ${plant.name} (${todayStr()})`);
-                toast(`Watered ${plant.name} 💧`);
+                toast(`Watered ${plant.name}`);
             } catch (e) {
                 btn.disabled = false;
                 handleWriteError(e);
@@ -220,7 +234,7 @@ function plantRow(plant, subEl, extra) {
         el("a", { class: "row-link", href: `#/plant/${plant.id}`, style: "display:flex;align-items:center;gap:0.85rem;flex:1;min-width:0" },
             thumb(plant),
             el("div", { class: "row-main" },
-                el("div", { class: "row-title" }, plant.name),
+                el("div", { class: "row-title" }, nameIcon(plant), plant.name),
                 subEl)),
         extra || null);
 }
@@ -235,24 +249,26 @@ function viewToday(container) {
     due.sort((a, b) => (b.info.daysOver ?? -1) - (a.info.daysOver ?? -1));
 
     if (!due.length) {
-        container.append(el("div", { class: "empty-state" },
-            state.data.plants.length ? "Nothing due today." : "No plants yet — add your first one."));
+        container.append(state.data.plants.length
+            ? emptyState("water", "Nothing due today.")
+            : emptyState("seedling", "No plants yet — add your first one."));
         return;
     }
     for (const { plant, info } of due) {
         const label = info.status === "never"
             ? "never watered"
             : info.daysOver === 0 ? "due today" : `${info.daysOver} day${info.daysOver > 1 ? "s" : ""} overdue`;
-        container.append(plantRow(plant,
-            el("div", { class: `row-sub ${info.daysOver > 0 ? "overdue" : "due"}` }, label),
-            waterButton(plant)));
+        const sub = el("div", { class: `row-sub ${info.daysOver > 0 ? "overdue" : "due"}` });
+        if (info.daysOver > 0) sub.append(uiIcon("overdue", "overdue-icon"));
+        sub.append(label);
+        container.append(plantRow(plant, sub, waterButton(plant)));
     }
 }
 
 function viewAll(container) {
     if (loadingOrError(container)) return;
     if (!state.data.plants.length) {
-        container.append(el("div", { class: "empty-state" }, "No plants yet — add your first one."));
+        container.append(emptyState("seedling", "No plants yet — add your first one."));
         return;
     }
     const sorted = [...state.data.plants].sort((a, b) => a.name.localeCompare(b.name));
@@ -272,7 +288,8 @@ function viewDetail(container, id) {
         container.append(el("div", { class: "empty-state" }, "Plant not found."));
         return;
     }
-    $title.textContent = plant.name;
+    $title.innerHTML = "";
+    $title.append(nameIcon(plant), plant.name);
 
     const url = photoUrl(plant);
     if (url) container.append(el("img", { class: "hero-photo", src: url, alt: plant.name }));
@@ -312,7 +329,7 @@ function viewDetail(container, id) {
                         if (p) p.log.unshift({ date: todayStr(), note });
                         return d;
                     }, `garden: water ${plant.name} (${todayStr()})`);
-                    toast(`Watered ${plant.name} 💧`);
+                    toast(`Watered ${plant.name}`);
                 } catch (e) {
                     ev.currentTarget.disabled = false;
                     handleWriteError(e);
@@ -487,7 +504,7 @@ function plantForm(container, existing) {
                 }
                 return d;
             }, existing ? `garden: update ${name}` : `garden: add plant ${name}`);
-            toast(existing ? "Saved." : `Added ${name} 🌱`);
+            toast(existing ? "Saved." : `Added ${name}`);
             location.hash = `#/plant/${id}`;
         } catch (e) {
             saveBtn.disabled = false;
@@ -509,7 +526,8 @@ function plantForm(container, existing) {
             descInput),
         el("div", { class: "field" },
             el("span", { class: "label-text" }, "Photo"),
-            el("button", { class: "btn secondary", type: "button", onclick: () => fileInput.click() }, "📷 Take / choose photo"),
+            el("button", { class: "btn secondary", type: "button", onclick: () => fileInput.click() },
+                uiIcon("camera", "btn-icon"), "Take / choose photo"),
             fileInput,
             preview),
         el("div", { class: "field" },
