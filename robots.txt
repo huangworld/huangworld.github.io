@@ -14,5 +14,6 @@ Disallow: /.gitignore
 Disallow: /.github/
 Disallow: /git-update.sh
 Disallow: /README.md
+Disallow: /garden/
 
-Sitemap: https://https://www.cs.jhu.edu/~yyliu/sitemap.xml
+Sitemap: https://huangworld.github.io/sitemap.xml
