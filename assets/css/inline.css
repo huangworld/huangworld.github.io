@@ -369,13 +369,26 @@ input, textarea, select {
     font-size: 16px !important;
 }
 
-/* Allow text selection for content areas */
-p, .bio-column, .publications .title, .publications .author, .publications .periodical, h1, h2, h3 {
+/* Allow text selection for content areas.
+   The descendant variants (e.g. "p *") are required: the global
+   "* { user-select: none }" above matches child spans (.marker-highlight,
+   .rn-underline, code, ...) directly, which would otherwise override the
+   selectable setting inherited from their container. */
+p, .bio-column, .publications .title, .publications .author, .publications .periodical, h1, h2, h3,
+p *, .bio-column *, .publications .title *, .publications .author *, .publications .periodical *, h1 *, h2 *, h3 * {
     -webkit-user-select: text;
     -khtml-user-select: text;
     -moz-user-select: text;
     -ms-user-select: text;
     user-select: text;
+}
+
+/* RoughNotation draws SVG overlays on top of annotated text; make sure they
+   never intercept clicks or text selection. */
+svg.rough-annotation {
+    pointer-events: none;
+    -webkit-user-select: none;
+    user-select: none;
 }
 
 /* Profile photo and social icons alignment */

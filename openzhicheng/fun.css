@@ -1,0 +1,114 @@
+/* Shared base styles for the openzhicheng fun pages.
+   Echoes the homepage palette but stands on its own (mobile-first, narrow column). */
+
+:root {
+    --bg-color: #FBFAF8;      /* warm off-white */
+    --card-bg: #FFFFFF;
+    --text-color: #333333;
+    --text-light: #8a8a86;
+    --accent-text: #2E8B57;   /* homepage sea green */
+    --accent-hover: #1f6b42;
+    --hairline: rgba(0, 0, 0, 0.08);
+    --radius: 12px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg-color);
+    color: var(--text-color);
+    font: 17px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+        "Helvetica Neue", Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
+
+.page {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 2.5rem 1.25rem 4rem;
+}
+
+h1 {
+    font-size: 1.9rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin: 0 0 0.35rem;
+}
+
+h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 2.25rem 0 0.75rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid var(--hairline);
+}
+
+p { margin: 0 0 1rem; }
+
+a { color: var(--accent-text); text-decoration: none; }
+a:hover { color: var(--accent-hover); }
+
+.subtitle { color: var(--text-light); margin-bottom: 2rem; }
+
+.back-link {
+    display: inline-block;
+    color: var(--text-light);
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+}
+.back-link:hover { color: var(--accent-text); }
+
+/* Card list used by the hub */
+.fun-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.fun-list a.card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: var(--card-bg);
+    border: 1px solid var(--hairline);
+    border-radius: var(--radius);
+    padding: 1rem 1.15rem;
+    color: var(--text-color);
+    transition: border-color 0.15s ease, transform 0.15s ease;
+}
+.fun-list a.card:hover {
+    border-color: var(--accent-text);
+    transform: translateY(-1px);
+}
+
+.card .emoji {
+    width: 44px;
+    height: 44px;
+    object-fit: contain;
+    flex-shrink: 0;
+    filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.12));
+}
+.card .card-title { font-weight: 600; }
+.card .card-desc {
+    color: var(--text-light);
+    font-size: 0.92rem;
+    margin-top: 0.1rem;
+}
+
+footer.fun-footer {
+    margin-top: 3.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--hairline);
+    color: var(--text-light);
+    font-size: 0.9rem;
+}
+
+@media print {
+    .back-link, footer.fun-footer { display: none; }
+    body { background: #fff; }
+}
