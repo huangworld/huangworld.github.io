@@ -2,7 +2,8 @@ import { PHOTO_DIR, RAW_BASE, OWNER, REPO, BRANCH, DATA_PATH } from "./config.js
 import * as gh from "./gh.js";
 import { searchTaxa, fetchDescription, debounce } from "./lookup.js";
 import { compress } from "./image.js";
-import { plantIcon, iconUrl, UI } from "./icons.js";
+import { iconUrl, UI } from "./icons.js";
+import { plantAvatar } from "./avatar.js";
 
 const $main = document.getElementById("main");
 const $title = document.getElementById("view-title");
@@ -95,14 +96,14 @@ function photoUrl(plant) {
 
 function thumb(plant) {
     const url = photoUrl(plant);
-    return url
-        ? el("img", { class: "thumb", src: url, alt: "", loading: "lazy" })
-        : el("div", { class: "thumb placeholder" },
-            el("img", { src: iconUrl(plantIcon(plant.name, plant.kind)), alt: "" }));
+    if (url) return el("img", { class: "thumb", src: url, alt: "", loading: "lazy" });
+    const box = el("div", { class: "thumb placeholder" });
+    box.append(plantAvatar(plant.name, plant.kind, "thumb-avatar"));
+    return box;
 }
 
 function nameIcon(plant) {
-    return el("img", { class: "name-icon", src: iconUrl(plantIcon(plant.name, plant.kind)), alt: "" });
+    return plantAvatar(plant.name, plant.kind, "name-icon");
 }
 
 function uiIcon(name, cls) {
@@ -399,6 +400,15 @@ function plantForm(container, existing) {
     const descInput = el("textarea", { placeholder: "Notes about this plant…" }, draft.description);
     const results = el("div", { class: "lookup-results" });
 
+    // live preview of the plant's generated icon
+    const avatarPreview = el("span", { class: "avatar-preview", title: "This plant's icon" });
+    const updateAvatar = () => {
+        avatarPreview.innerHTML = "";
+        avatarPreview.append(plantAvatar(nameInput.value.trim() || "plant", draft.kind));
+    };
+    updateAvatar();
+    nameInput.addEventListener("input", updateAvatar);
+
     const runLookup = debounce(async () => {
         const q = nameInput.value.trim();
         results.innerHTML = "";
@@ -438,6 +448,7 @@ function plantForm(container, existing) {
             onclick: (ev) => {
                 draft.kind = draft.kind === k ? "" : k;
                 kindBtns.forEach((b, i) => b.classList.toggle("selected", kinds[i] === draft.kind));
+                updateAvatar();
             },
         }, k));
 
@@ -516,7 +527,7 @@ function plantForm(container, existing) {
     container.append(
         el("label", { class: "field" },
             el("span", { class: "label-text" }, "Name"),
-            nameInput),
+            el("div", { class: "name-row" }, nameInput, avatarPreview)),
         results,
         el("label", { class: "field" },
             el("span", { class: "label-text" }, "Type"),

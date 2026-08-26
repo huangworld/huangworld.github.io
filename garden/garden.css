@@ -104,11 +104,11 @@ main {
 .tabbar a.active .tab-icon { filter: none; }
 
 .name-icon {
-    width: 20px;
-    height: 20px;
+    width: 22px;
+    height: 22px;
     object-fit: contain;
-    vertical-align: -0.22rem;
-    margin-right: 0.35rem;
+    vertical-align: -0.3rem;
+    margin-right: 0.3rem;
 }
 
 .overdue-icon {
@@ -237,12 +237,31 @@ label.field .label-text {
     align-items: center;
     justify-content: center;
 }
-.thumb.placeholder img {
-    width: 34px;
-    height: 34px;
+.thumb.placeholder img,
+.thumb.placeholder svg {
+    width: 42px;
+    height: 42px;
     object-fit: contain;
     filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.15));
 }
+
+.name-row {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+.avatar-preview {
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    background: var(--card);
+    border: 1px solid var(--hairline);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.avatar-preview svg { width: 38px; height: 38px; }
 
 /* ---- Today / list rows ---- */
 
