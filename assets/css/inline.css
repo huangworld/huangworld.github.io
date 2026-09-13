@@ -683,3 +683,8 @@ svg.rough-annotation {
         height: 120px;
     }
 }
+/* Hand-drawn frames for the homepage research figures. */
+.figure-sketch { position: relative; display: inline-block; max-width: 100%; padding: 6px; box-sizing: border-box; vertical-align: middle; }
+.figure-sketch > svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+.teaser-cell .figure-sketch .teaser { max-width: 100%; border-radius: 0; }
+@media (max-width: 768px) { .figure-sketch { width: 100%; max-width: 312px; } }
