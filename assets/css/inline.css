@@ -688,3 +688,19 @@ svg.rough-annotation {
 .figure-sketch > svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
 .teaser-cell .figure-sketch .teaser { max-width: 100%; border-radius: 0; }
 @media (max-width: 768px) { .figure-sketch { width: 100%; max-width: 312px; } }
+
+/* A common right edge across the biography and both publication sections. */
+.intro-table { width: 100%; border-spacing: 0; }
+.bio-column, .description-cell { padding-right: 0; }
+.publications-table { table-layout: fixed; }
+.bio-column code { display: block; width: 100%; text-align: left; }
+@media (min-width: 769px) {
+    .bio-column p,
+    .wrapper > section > p,
+    .publications .title,
+    .publications .author,
+    .publications .periodical {
+        text-align: justify;
+        text-align-last: left;
+    }
+}
