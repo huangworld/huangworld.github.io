@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Trails</title>
+    <meta name="description" content="A little map of trails around San Diego, with my notes." />
+    <meta name="robots" content="noindex" />
+    <link rel="icon" href="/assets/img/favicon.png" type="image/png" />
+    <link rel="stylesheet" href="/openzhicheng/fun.css" />
+    <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@5.6.0/dist/maplibre-gl.css" />
+    <link rel="stylesheet" href="./trails.css?v=2" />
+    <script defer src="https://unpkg.com/maplibre-gl@5.6.0/dist/maplibre-gl.js"></script>
+    <script defer src="https://unpkg.com/roughjs@4.6.6/bundled/rough.js"></script>
+    <script defer src="./trails.js?v=2"></script>
+</head>
+<body>
+    <main class="page">
+        <a class="back-link" href="/openzhicheng/">← openzhicheng</a>
+        <header><h1><img src="/assets/emoji/mountain_socal.png" alt="" width="40" height="40" style="object-fit:contain;vertical-align:-0.3em;margin-right:0.3rem;filter:drop-shadow(0 2px 3px rgba(0,0,0,0.12))" />Trails</h1><p>A few places to wander around San Diego.</p></header>
+        <div class="trail-layout">
+            <section class="map-column" aria-label="Trail map">
+                <div class="map-frame sketch"><div id="map" aria-label="Map of San Diego trails"></div></div>
+                <div class="map-caption"><span>★ UCSD Graduate Housing</span><button id="reset-map" hidden>Show all places ↗</button></div>
+                <p id="map-status" role="status"></p>
+                <p id="route-status" role="status"></p>
+                <noscript><p>Enable JavaScript for the map. All my notes and map links are below.</p></noscript>
+            </section>
+            <section class="notes" aria-labelledby="notes-title">
+                <h2 id="notes-title">My notes</h2>
+                <article id="annie" data-places='[["Annie’s Trail",-117.26414,33.00575]]'>
+                    <div class="place-heading"><span class="number">1</span><h3>Annie’s Trail</h3><span class="drive">14 min</span></div>
+                    <p class="written">This one's coastal, seems nice before sunset?</p>
+                    <a href="https://www.google.com/maps/search/?api=1&amp;query=Annies+Canyon+Trail+Solana+Beach">Open in Maps ↗</a>
+                </article>
+                <article id="mission" data-places='[["Mission Trails",-117.0417,32.8198]]'>
+                    <div class="place-heading"><span class="number">2</span><h3>Mission Trails</h3><span class="drive">20 min</span></div>
+                    <p class="written">a few trails here, can get crowded</p>
+                    <a href="https://www.google.com/maps/search/?api=1&amp;query=Mission+Trails+Regional+Park">Open in Maps ↗</a>
+                </article>
+                <article id="iron" data-places='[["Iron Mountain",-116.9550,32.9781]]'>
+                    <div class="place-heading"><span class="number">3</span><h3>Iron Mountain</h3><span class="drive">33 min</span></div>
+                    <p class="written">HOT! go before sunrise</p>
+                    <a href="https://www.google.com/maps/search/?api=1&amp;query=Iron+Mountain+Trailhead+Poway">Open in Maps ↗</a>
+                </article>
+                <article id="cuyamaca" data-places='[["Cuyamaca Peak",-116.5808,32.9594]]'>
+                    <div class="place-heading"><span class="number">4</span><h3>Cuyamaca Peak</h3><span class="drive">52 min</span></div>
+                    <div class="place-detail">Cuyamaca Rancho State Park</div>
+                    <p class="written">More shaded + higher, nice view, Brian's favourite</p>
+                    <a href="https://www.google.com/maps/search/?api=1&amp;query=Cuyamaca+Rancho+State+Park+Cuyamaca+Peak">Open in Maps ↗</a>
+                </article>
+                <article id="palomar" data-places='[["Palomar Mountain",-116.8650,33.3103],["Doane Valley Campground",-116.901414,33.343923]]'>
+                    <div class="place-heading"><span class="number">5</span><h3>Palomar Mountain</h3><span class="drive">1 h 14 min</span></div>
+                    <div class="place-detail">+ Doane Valley Campground</div>
+                    <p class="written">looks nice and shaded</p>
+                    <div class="links"><a href="https://www.google.com/maps/search/?api=1&amp;query=Palomar+Mountain">Palomar ↗</a><a href="https://www.google.com/maps/search/?api=1&amp;query=Doane+Valley+Campground">Doane Valley ↗</a></div>
+                </article>
+            </section>
+        </div>
+        <footer class="fun-footer"><a href="/openzhicheng/">← openzhicheng</a></footer>
+    </main>
+</body>
+</html>
