@@ -1,0 +1,9 @@
+@misc{min2026gradual,
+  title={Gradual Generation of User Interfaces as a Design Method for Malleable Software},
+  author={Min, Bryan and Jiang, Peiling and Huang, Zhicheng and Xia, Haijun},
+  year={2026},
+  eprint={2601.17975},
+  archivePrefix={arXiv},
+  primaryClass={cs.HC},
+  url={https://arxiv.org/abs/2601.17975}
+}

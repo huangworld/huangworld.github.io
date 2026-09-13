@@ -1,0 +1,7 @@
+@inproceedings{huang2026maintenance,
+  title={Maintenance of Personal Generative User Interfaces},
+  author={Huang, Zhicheng and Xia, Haijun},
+  booktitle={CHI 2026 Workshop on Generative UI (GenUI meets HCI)},
+  year={2026},
+  url={https://genuimeetshci.github.io/chi26-workshop/}
+}
