@@ -2,7 +2,7 @@
    Echoes the homepage palette but stands on its own (mobile-first, narrow column). */
 
 :root {
-    --bg-color: #FBFAF8;      /* warm off-white */
+    --bg-color: #F7F9FC;      /* same soft grey as homepage (style.css) */
     --card-bg: #FFFFFF;
     --text-color: #333333;
     --text-light: #8a8a86;
@@ -29,6 +29,23 @@ body {
     margin: 0 auto;
     padding: 2.5rem 1.25rem 4rem;
 }
+
+
+/* Keep the hub footer near the viewport bottom, even with a short card list. */
+.fun-hub {
+    min-height: 100vh;
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.fun-hub .fun-list {
+    width: 100%;
+    flex: 1;
+}
+
+.fun-hub .fun-footer { width: 100%; }
 
 h1 {
     font-size: 1.9rem;
@@ -63,7 +80,7 @@ a:hover { color: var(--accent-hover); }
 /* Card list used by the hub */
 .fun-list {
     list-style: none;
-    margin: 0;
+    margin: 1.75rem 0 0;
     padding: 0;
     display: flex;
     flex-direction: column;
