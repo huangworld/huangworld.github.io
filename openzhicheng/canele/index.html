@@ -64,6 +64,12 @@
             .sidenote:nth-of-type(even) { transform: rotate(0.8deg); }
         }
 
+        @media (max-width: 600px) {
+            .method { padding-left: 0; list-style: none; counter-reset: step; }
+            .method > li { counter-increment: step; }
+            .method .lead::before, .method > li:not(:has(.lead))::before { content: counter(step) ". "; }
+        }
+
         @media print { .sidenote { color: #333; } }
     </style>
 </head>

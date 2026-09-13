@@ -63,8 +63,10 @@
         /* ---------- info card ---------- */
         .card {
             position: absolute; left: 14px; bottom: 14px; z-index: 5; width: min(360px, calc(100% - 28px));
-            background: var(--bg-color); padding: 0.85rem 1rem 0.9rem; font-size: 0.98rem; line-height: 1.45;
+            background: var(--bg-color); padding: 25px 6px 6px; max-height: calc(100% - 28px); display: flex; flex-direction: column; font-size: 0.98rem; line-height: 1.45;
         }
+        .card-scroll { min-height: 0; overflow: auto; overscroll-behavior: contain; }
+        .card-content { padding: 0 .65rem .6rem; overflow-wrap: anywhere; }
         .card[hidden] { display: none; }
         .card .kind { font-size: 0.82rem; color: var(--text-light); letter-spacing: 0.02em; }
         .card .kind.kart { color: var(--kart); }
@@ -96,7 +98,7 @@
         @media (max-width: 600px) {
             body { font-size: 15px; }
             #map { height: calc(100svh - 12rem); min-height: 380px; }
-            .card { left: 8px; right: 8px; bottom: 8px; width: auto; max-height: 60%; overflow: auto; }
+            .card { left: 8px; right: 8px; bottom: 8px; width: auto; max-height: calc(100% - 16px); }
         }
     </style>
 </head>
@@ -310,6 +312,8 @@
             const { svg, rc, origin } = overlayFor(cardEl);
             const c = COLORS[open.kind], b = brushOf(open), i = PLACES.indexOf(open), seed = 200 + i * 11;
             svg.appendChild(rc.rectangle(1, 1, origin.width - 2, origin.height - 2, stroke(b, { stroke: c.ink, fill: '#F7F9FC', fillStyle: 'solid', seed })));
+            {
+            const { svg, rc, origin } = overlayFor(cardEl.querySelector('.card-content'));
             // the title mark is the same brush laid down as an accent: a pencil scribbles, a marker swipes a solid bar
             cardEl.querySelectorAll('h3').forEach(h => {
                 [...h.getClientRects()].map(q => rel(q, origin)).forEach((r, k) => {
@@ -326,6 +330,7 @@
                     }
                 });
             });
+            }
         }
 
         function renderCard() {
@@ -333,6 +338,7 @@
             cardEl.className = 'sketch card ' + p.kind;
             cardEl.innerHTML = `
                 <button class="close" aria-label="Close">×</button>
+                <div class="card-scroll"><div class="sketch card-content">
                 <div class="kind ${p.kind}">${LABEL[p.kind]}</div>
                 <h3>${p.name}</h3>
                 <p class="where">${p.where} · ${p.route ? `${p.route.text} drive` : p.routeFailed ? `${p.drive} drive` : `${p.drive} drive <span class="dim">(routing…)</span>`}</p>
@@ -341,7 +347,7 @@
                     <div class="links">${p.links.map(([t, u]) => `<a href="${u}" target="_blank" rel="noopener">${t} ↗</a>`).join('')}
                         <a href="https://www.google.com/maps/dir/?api=1&destination=${p.lat},${p.lng}" target="_blank" rel="noopener">directions ↗</a>
                     </div></div>` : ''}
-                <button class="toggle">${expanded ? 'less ↑' : 'more ↓'}</button>`;
+                <button class="toggle">${expanded ? 'less ↑' : 'more ↓'}</button></div></div>`;
             cardEl.hidden = false;
             cardEl.querySelector('.close').onclick = closeCard;
             cardEl.querySelector('.toggle').onclick = () => { expanded = !expanded; renderCard(); };
