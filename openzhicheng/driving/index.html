@@ -209,6 +209,20 @@
         const COLORS = { scca: { ink: css('--ink'), bg: css('--ink-bg') }, kart: { ink: css('--kart'), bg: css('--kart-bg') } };
         const LABEL = { scca: 'SCCA license program', kart: 'Outdoor karting' };
         const opts = { strokeWidth: 1.1, roughness: 1.4, bowing: 1.2, seed: 7 };
+
+        // 笔触 — each place draws with one of these. They differ in the stroke itself (weight, wobble,
+        // single vs. doubled line) and in how much ink the fill lays down, from a few pencil hatches to near-solid marker.
+        const BRUSHES = [
+            { name: 'pencil',  strokeWidth: 0.7, roughness: 2.0, bowing: 1.8, fillStyle: 'hachure',     fillWeight: 0.5, hachureGap: 7,   route: { width: 1.6, dash: [1, 2.2] } },
+            { name: 'pen',     strokeWidth: 1.5, roughness: 0.7, bowing: 0.4, fillStyle: 'cross-hatch', fillWeight: 0.8, hachureGap: 4,   route: { width: 2.2, dash: null }, disableMultiStroke: true },
+            { name: 'marker',  strokeWidth: 3.0, roughness: 1.0, bowing: 0.8, fillStyle: 'zigzag',      fillWeight: 3.2, hachureGap: 4.5, route: { width: 4.5, dash: null } },
+            { name: 'scratch', strokeWidth: 1.0, roughness: 2.3, bowing: 1.8, fillStyle: 'zigzag-line', fillWeight: 0.7, hachureGap: 2,   route: { width: 2, dash: [3, 1.2] } },
+            { name: 'ink',     strokeWidth: 2.0, roughness: 0.4, bowing: 0.2, fillStyle: 'solid',       fillWeight: 2,                    route: { width: 3.2, dash: [6, 2] } },
+            { name: 'stipple', strokeWidth: 1.2, roughness: 1.5, bowing: 1.0, fillStyle: 'dots',        fillWeight: 1.8, hachureGap: 3,   route: { width: 2.6, dash: [0.2, 1.6] } },
+        ];
+        const brushOf = p => BRUSHES[PLACES.indexOf(p) % BRUSHES.length];
+        const stroke = (b, extra = {}) => ({ ...opts, strokeWidth: b.strokeWidth, roughness: b.roughness, bowing: b.bowing, disableMultiStroke: !!b.disableMultiStroke, ...extra });
+        const inkFill = (b, extra = {}) => ({ ...stroke(b), fillStyle: b.fillStyle, fillWeight: b.fillWeight, hachureGap: b.hachureGap, ...extra });
         const SVG = 'http://www.w3.org/2000/svg';
 
         function overlayFor(wrap) {
@@ -231,13 +245,8 @@
             const svg = document.createElementNS(SVG, 'svg'); svg.setAttribute('viewBox', '-4 -4 26 26');
             const rc = rough.svg(svg);
             const stroke = on[kind] ? COLORS[kind].ink : '#9a9a96';
-            if (kind === 'scca') {
-                svg.appendChild(rc.rectangle(0, 0, 18, 18, { ...opts, stroke, seed: 21 }));
-                if (on[kind]) svg.appendChild(rc.path('M 3 9 L 8 14 L 16 2', { ...opts, stroke, strokeWidth: 2, seed: 23, roughness: 1.2 }));
-            } else {
-                svg.appendChild(rc.circle(9, 9, 19, { ...opts, stroke, seed: 22, roughness: 1.6 }));
-                if (on[kind]) svg.appendChild(rc.circle(9, 9, 10, { ...opts, stroke, fill: stroke, fillStyle: 'zigzag', hachureGap: 2.5, fillWeight: 1.4, seed: 24 }));
-            }
+            svg.appendChild(rc.rectangle(0, 0, 18, 18, { ...opts, stroke, seed: 21 }));
+            if (on[kind]) svg.appendChild(rc.path('M 3 9 L 8 14 L 16 2', { ...opts, stroke, strokeWidth: 2, seed: 23, roughness: 1.2 }));
             box.appendChild(svg);
         }
 
@@ -257,38 +266,37 @@
         const cardEl = document.getElementById('card');
         let map, markers = [], open = null, expanded = false;
 
-        // every pin gets its own wobble: seed, fill pattern, hatch angle, head shape, tilt
-        const FILLS = ['hachure', 'cross-hatch', 'zigzag', 'dots', 'dashed'];
-        function pinSvg(kind, i) {
+        // a drop: round head, short tail to the tip at (13, 34); drawn with the place's brush
+        function pinSvg(p) {
             const svg = document.createElementNS(SVG, 'svg'); svg.setAttribute('viewBox', '0 0 26 34');
             const rc = rough.svg(svg);
-            const c = COLORS[kind];
-            const seed = 100 + i * 7;
-            const fill = { ...opts, stroke: c.ink, fill: c.bg, fillStyle: FILLS[i % FILLS.length], hachureAngle: -60 + i * 37, hachureGap: 2.5 + (i % 3), fillWeight: 1.2, seed, roughness: 1.2 + (i % 3) * 0.3 };
-            // a drop: head (round or a little squashed), short tail to the tip at (13, 34)
-            svg.appendChild(i % 2 ? rc.ellipse(13, 12, 21, 19, fill) : rc.circle(13, 12, 20, fill));
-            svg.appendChild(rc.line(13, 22, 13, 33, { ...opts, stroke: c.ink, strokeWidth: 1.4 + (i % 2) * 0.4, seed: seed + 1 }));
-            svg.style.setProperty('--tilt', `${((i * 53) % 17) - 8}deg`);
+            const c = COLORS[p.kind], b = brushOf(p), i = PLACES.indexOf(p), seed = 100 + i * 7;
+            // solid/marker fills use the pale tint; sparse fills lay the ink colour down so the density difference shows
+            const fillColor = b.fillStyle === 'solid' ? c.bg : c.ink;
+            svg.appendChild(rc.circle(13, 12, 20, inkFill(b, { stroke: c.ink, fill: fillColor, hachureAngle: -60 + i * 37, seed })));
+            svg.appendChild(rc.line(13, 22, 13, 33, stroke(b, { stroke: c.ink, seed: seed + 1 })));
+            svg.style.setProperty('--tilt', `${((i * 53) % 13) - 6}deg`);
             return svg;
         }
 
         function sketchCard() {
             if (cardEl.hidden) return;
             const { svg, rc, origin } = overlayFor(cardEl);
-            const c = COLORS[open.kind], i = PLACES.indexOf(open), seed = 200 + i * 11;
-            svg.appendChild(rc.rectangle(1, 1, origin.width - 2, origin.height - 2, { ...opts, stroke: c.ink, fill: '#F7F9FC', fillStyle: 'solid', seed, roughness: 1.2 + (i % 3) * 0.4 }));
-            // title gets one of four marks: single line, double line, wavy line, highlighter scribble
+            const c = COLORS[open.kind], b = brushOf(open), i = PLACES.indexOf(open), seed = 200 + i * 11;
+            svg.appendChild(rc.rectangle(1, 1, origin.width - 2, origin.height - 2, stroke(b, { stroke: c.ink, fill: '#F7F9FC', fillStyle: 'solid', seed })));
+            // the title mark is the same brush laid down as an accent: a pencil scribbles, a marker swipes a solid bar
             cardEl.querySelectorAll('h3').forEach(h => {
-                const rects = [...h.getClientRects()].map(q => rel(q, origin));   // one per wrapped line
-                rects.forEach((r, k) => {
-                    const y = r.y + r.h - 3, o = { ...opts, stroke: c.bg, strokeWidth: 3, seed: seed + k, roughness: 2 };
-                    switch (i % 4) {
-                        case 0: svg.appendChild(rc.line(r.x, y, r.x + r.w, y, { ...o, strokeWidth: 3.5 })); break;
-                        case 1: svg.appendChild(rc.line(r.x, y, r.x + r.w, y, { ...o, strokeWidth: 2 }));
-                                svg.appendChild(rc.line(r.x + 4, y + 4, r.x + r.w - 2, y + 4, { ...o, strokeWidth: 1.6, seed: seed + k + 5 })); break;
-                        case 2: { const pts = []; for (let x = 0; x <= r.w; x += 6) pts.push([r.x + x, y + Math.sin(x / 6) * 2]);
-                                svg.appendChild(rc.curve(pts, { ...o, strokeWidth: 2.4 })); break; }
-                        case 3: svg.insertBefore(rc.rectangle(r.x - 2, r.y + 3, r.w + 4, r.h - 4, { ...o, stroke: 'none', fill: c.bg, fillStyle: 'zigzag', hachureAngle: -8, hachureGap: 4, fillWeight: 3 }), svg.firstChild.nextSibling); break;
+                [...h.getClientRects()].map(q => rel(q, origin)).forEach((r, k) => {
+                    const y = r.y + r.h - 3;
+                    switch (b.name) {
+                        case 'pencil':  svg.appendChild(rc.line(r.x, y, r.x + r.w, y, stroke(b, { stroke: c.bg, strokeWidth: 1.4, roughness: 2.6, seed: seed + k })));
+                                        svg.appendChild(rc.line(r.x + 2, y + 2, r.x + r.w, y + 3, stroke(b, { stroke: c.bg, strokeWidth: 1.2, roughness: 2.6, seed: seed + k + 5 }))); break;
+                        case 'pen':     svg.appendChild(rc.line(r.x, y, r.x + r.w, y, stroke(b, { stroke: c.bg, strokeWidth: 2.2, seed: seed + k }))); break;
+                        case 'marker':  svg.insertBefore(rc.rectangle(r.x - 3, r.y + 2, r.w + 6, r.h - 2, inkFill(b, { stroke: 'none', fill: c.bg, hachureAngle: -4, hachureGap: 5, fillWeight: 4, seed: seed + k })), svg.firstChild.nextSibling); break;
+                        case 'scratch': svg.insertBefore(rc.rectangle(r.x - 2, r.y + 4, r.w + 4, r.h - 6, inkFill(b, { stroke: 'none', fill: c.bg, hachureAngle: -12, hachureGap: 2.2, fillWeight: 0.9, seed: seed + k })), svg.firstChild.nextSibling); break;
+                        case 'ink':     svg.appendChild(rc.line(r.x, y, r.x + r.w, y, stroke(b, { stroke: c.bg, strokeWidth: 4, seed: seed + k }))); break;
+                        case 'stipple': { const pts = []; for (let x = 0; x <= r.w; x += 6) pts.push([r.x + x, y + Math.sin(x / 6) * 2]);
+                                        svg.appendChild(rc.curve(pts, stroke(b, { stroke: c.bg, strokeWidth: 2.4, seed: seed + k }))); break; }
                     }
                 });
             });
@@ -367,6 +375,11 @@
             if (!src) return;
             src.setData(p?.route ? { type: 'Feature', geometry: { type: 'LineString', coordinates: p.route.coords }, properties: { kind: p.kind } }
                                  : { type: 'FeatureCollection', features: [] });
+            if (p) {
+                const r = brushOf(p).route;
+                map.setPaintProperty('route', 'line-width', r.width);
+                map.setPaintProperty('route', 'line-dasharray', r.dash || [1, 0]);
+            }
         }
         async function showRoute(p) {
             setRoute(p);                                   // shows immediately if cached
@@ -399,7 +412,7 @@
         markers = PLACES.map(p => {
             const content = document.createElement('div');
             content.className = 'pin ' + p.kind; content.title = p.name;
-            content.appendChild(pinSvg(p.kind, PLACES.indexOf(p)));
+            content.appendChild(pinSvg(p));
             const m = new maplibregl.Marker({ element: content, anchor: 'bottom' }).setLngLat([p.lng, p.lat]).addTo(map);
             m.place = p; m.content = content;
             content.addEventListener('click', e => { e.stopPropagation(); openCard(m); });
