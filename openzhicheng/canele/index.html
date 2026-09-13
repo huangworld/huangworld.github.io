@@ -3,93 +3,220 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>The Canelé Recipe</title>
-    <meta name="description" content="Canelés de Bordeaux — custardy inside, deeply caramelized outside." />
+    <title>Canelé de Bordeaux</title>
+    <meta name="description" content="Canelé de Bordeaux — a very dark, crisp caramelized shell around a soft custardy center." />
     <link rel="icon" media="(prefers-color-scheme:dark)" href="/assets/img/favicon-dark.png" type="image/png" />
     <link rel="icon" media="(prefers-color-scheme:light)" href="/assets/img/favicon.png" type="image/png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" />
     <link rel="stylesheet" href="../fun.css" />
+    <link rel="preload" as="image" href="https://s2.svgbox.net/pen-brushes.svg?ic=brush-1&color=c8e6c9" />
     <style>
-        .ingredients {
-            list-style: none;
-            margin: 0 0 1rem;
-            padding: 0;
-        }
+        :root { --accent-bg: #C8E6C9; }   /* homepage's light leafy green */
+
+        .page { position: relative; }
+        h1 { margin-bottom: 1.25rem; }
+
+        .ingredients { list-style: none; margin: 0 0 1rem; padding: 0; }
         .ingredients li {
-            display: flex;
-            justify-content: space-between;
-            gap: 1rem;
-            padding: 0.5rem 0;
-            border-bottom: 1px solid var(--hairline);
+            display: flex; justify-content: space-between; gap: 1rem;
+            padding: 0.45rem 0; border-bottom: 1px solid var(--hairline);
         }
         .ingredients .amount {
-            color: var(--text-light);
-            white-space: nowrap;
-            font-variant-numeric: tabular-nums;
+            color: var(--text-light); white-space: nowrap; font-variant-numeric: tabular-nums;
         }
-        .timeline {
-            background: #eef5ef;
-            border: 1px solid rgba(46, 139, 87, 0.2);
-            border-radius: var(--radius);
-            padding: 1rem 1.15rem;
-            margin: 1.25rem 0;
+        .equipment { color: var(--text-light); font-size: 0.95rem; }
+
+        .method { margin: 0; padding-left: 1.35rem; }
+        .method li { margin-bottom: 0.9rem; }
+        .method .lead { display: block; font-weight: 600; }
+
+        /* ---------- annotations (same look as the homepage) ---------- */
+
+        svg.rough-annotation { pointer-events: none; }
+
+        /* <note> wraps the passage; <side> inside it holds my thought. */
+        note { cursor: help; margin: -2px -4px; padding: 2px 4px; }   /* room for the brush, same as homepage */
+        note > side { display: none; }              /* moved out by JS */
+
+        .sidenote {
+            font: 400 1.02rem/1.35 "Patrick Hand", "Segoe Print", "Bradley Hand", cursive;
+            color: var(--accent-hover);
+            transition: color 0.15s ease;
         }
-        .timeline strong { color: var(--accent-text); }
-        .method {
-            margin: 0;
-            padding-left: 1.35rem;
+        .sidenote b, .sidenote strong { font-weight: 400; text-decoration: underline; text-decoration-color: var(--accent-bg); }
+        .sidenote a { color: inherit; text-decoration: underline; text-decoration-color: var(--accent-bg); text-underline-offset: 2px; }
+        .sidenote a:hover { color: var(--accent-text); }
+        .sidenote.is-active { color: #14532d; }
+        /* hover: the brush highlight comes on over the underline */
+        note.is-active {
+            background: url("https://s2.svgbox.net/pen-brushes.svg?ic=brush-1&color=c8e6c9") no-repeat;
+            background-size: 100% 100%;
         }
-        .method li { margin-bottom: 0.85rem; }
-        .notes p { color: var(--text-light); font-size: 0.95rem; }
+
+        /* narrow: notes sit right under their paragraph */
+        .sidenote { display: block; margin: 0.15rem 0 0.75rem 0.25rem; padding-left: 0.6rem; border-left: 2px solid var(--accent-bg); }
+
+        /* wide: notes float in the right margin next to the passage */
+        @media (min-width: 1180px) {
+            .sidenote {
+                position: absolute; left: 100%; width: 230px; margin: 0 0 0 1.6rem;
+                padding: 0; border: 0; transform: rotate(-1.2deg); transform-origin: left top;
+            }
+            .sidenote:nth-of-type(even) { transform: rotate(0.8deg); }
+        }
+
+        @media print { .sidenote { color: #333; } }
     </style>
 </head>
 <body>
     <div class="page">
         <a class="back-link" href="../">← openzhicheng</a>
 
-        <h1><img src="/assets/emoji/custard.png" alt="" width="36" height="36" style="vertical-align:-0.35rem;margin-right:0.35rem;filter:drop-shadow(0 2px 3px rgba(0,0,0,0.12))" />The Canelé Recipe</h1>
-        <p class="subtitle">Canelés de Bordeaux — a crackly, bittersweet caramelized shell around a soft custard crumb. Not secret, just good.</p>
+        <h1><img src="/assets/emoji/canele.png" alt="" width="36" height="36" style="vertical-align:-0.35rem;margin-right:0.35rem;filter:drop-shadow(0 2px 3px rgba(0,0,0,0.12))" />Canelé de Bordeaux</h1>
 
-        <div class="timeline">
-            <strong>Plan ahead:</strong> the batter must rest <strong>24–48 hours</strong> in the fridge.
-            Day 1 — make the batter (20 min). Day 2 or 3 — bake (about 1 hour).
-        </div>
+        <!--
+            HOW TO ANNOTATE
+            Wrap any passage in <note>…</note> and put your thought in a <side> right inside it:
 
-        <h2>Ingredients <small style="color:var(--text-light);font-weight:400">(about 12 canelés)</small></h2>
+                <note>rest 18–24 hours<side>mine went 20h, perfect</side></note>
+
+            Passage gets the homepage's scribbled underline; hovering it (or its note) brings up the
+            brush highlight. <side> is optional — a bare <note> just underlines. HTML inside <side> is fine.
+            A <note> with no text of its own (<note><side>…</side></note>) just pins a thought at that spot.
+        -->
+
+        <h2>What you need <small style="color:var(--text-light);font-weight:400">(about 12 canelés)</small></h2>
         <ul class="ingredients">
-            <li><span>Whole milk</span><span class="amount">500 g</span></li>
-            <li><span>Unsalted butter</span><span class="amount">50 g</span></li>
-            <li><span>Vanilla bean, split (or 2 tsp extract)</span><span class="amount">1</span></li>
-            <li><span>All-purpose flour</span><span class="amount">100 g</span></li>
-            <li><span>Granulated sugar</span><span class="amount">220 g</span></li>
-            <li><span>Fine salt</span><span class="amount">1 pinch</span></li>
-            <li><span>Whole egg</span><span class="amount">1</span></li>
+            <li><span>Whole milk</span><span class="amount">500 mL</span></li>
+            <li><span>Unsalted butter, plus extra for brushing the mold</span><span class="amount">30 g</span></li>
+            <li><span>Sugar</span><span class="amount">200 g</span></li>
+            <li><span>Bread flour</span><span class="amount">125 g</span></li>
             <li><span>Egg yolks</span><span class="amount">2</span></li>
-            <li><span>Dark rum</span><span class="amount">50 g</span></li>
-            <li><span>Beeswax + butter for the molds (or just butter)</span><span class="amount">as needed</span></li>
+            <li><span>Whole egg</span><span class="amount">1</span></li>
+            <li><span>Salt</span><span class="amount">½ tsp</span></li>
+            <li><span>Vanilla extract</span><span class="amount">1 tsp</span></li>
+            <li><span>Rum extract</span><span class="amount">1 tsp</span></li>
+            <li><span>Rum</span><span class="amount">60 mL</span></li>
         </ul>
+        <p class="equipment">You'll also need a <note>canelé mold, ideally metal<side>this is what I got: <a href="https://www.amazon.com/clp/B078GTBSKV?lv=shuf&amp;channelId=500" target="_blank" rel="noopener">Chefmade mold from Amazon</a></side></note>, plus a saucepan, whisk, fine-mesh sieve, mixing bowl, pastry brush, and cooling rack.</p>
 
-        <h2>Method</h2>
+        <h2>Procedure</h2>
         <ol class="method">
-            <li>Warm the milk, butter, and vanilla bean to a bare simmer, then take it off the heat and let it cool until just warm (about 60&nbsp;°C). Hot milk scrambles the eggs; that's the main way this recipe fails.</li>
-            <li>Whisk the flour, sugar, and salt in a bowl. In another bowl, whisk the egg and yolks together.</li>
-            <li>Pour the eggs into the dry mix, then stream in the warm milk while whisking gently — you want a thin, crêpe-like batter with as little air as possible. Stir in the rum.</li>
-            <li>Strain the batter, cover, and refrigerate <strong>24–48 hours</strong>. The rest hydrates the flour and relaxes the gluten; skipping it gives you cakey, pale canelés.</li>
-            <li>Baking day: heat the oven to <strong>240&nbsp;°C</strong>. Coat the molds with a thin film of melted beeswax + butter (50/50) if using copper, or softened butter for silicone. Chill the coated molds.</li>
-            <li>Stir the cold batter gently (it separates), and fill the molds to about 1&nbsp;cm from the rim. Cold batter into a hot oven is what builds the crust.</li>
-            <li>Bake 15 minutes at 240&nbsp;°C, then drop to <strong>180&nbsp;°C</strong> and bake another <strong>45–60 minutes</strong>, until the tops are deep mahogany — darker than feels safe. Pale canelés taste of sweet nothing.</li>
-            <li>Unmold immediately onto a rack, and wait 30 minutes: the crust sets as it cools. Best within 6 hours of baking.</li>
+            <li><strong class="lead">Heat the milk and butter.</strong>
+                Bring the milk and butter <note>just to a boil<side>off the heat as soon as it bubbles — no need to keep it boiling</side></note>, then remove from the heat.</li>
+            <li><strong class="lead">Make the egg mixture.</strong>
+                In a bowl, combine the sugar, bread flour, salt, 2 egg yolks, and 1 whole egg. Mix until smooth, but <note>avoid whipping in too much air<side>whisk just until combined. canelé batter doesn't want air in it</side></note>.</li>
+            <li><strong class="lead">Add the hot milk gradually.</strong>
+                <note>Slowly pour<side>the step I'm most careful about. thin stream, whisking the whole time, a little at a time — never the whole pan at once. batter will look crêpe-thin at the end; that's normal</side></note> the hot milk mixture into the egg mixture while whisking continuously. This prevents the eggs from scrambling.</li>
+            <li><strong class="lead">Add the flavorings.</strong>
+                Stir in the vanilla extract, rum extract, and rum<note><side>I add these at the very end, not into the hot milk</side></note>.</li>
+            <li><strong class="lead">Strain and rest.</strong>
+                Pass the batter through a fine-mesh sieve, cover, and refrigerate for <strong>12–48 hours</strong>. Around 18–24 hours works especially well.</li>
+            <li><strong class="lead">Prepare the mold.</strong>
+                Preheat the oven to <strong>480–485 °F / 250 °C</strong> using regular Bake, not convection. Brush the inside of the metal mold with a <note>thin layer of softened butter<side>coverage matters more than a perfect finish. soft enough to spread easily, thin coat into every groove and across the bottom, wipe off clumps and puddles. brush marks are fine — stop fiddling with it</side></note>, making sure to coat the ridges and bottom.</li>
+            <li><strong class="lead">Rest the batter.</strong>
+                Take the batter out of the fridge about <strong>15 minutes</strong> before filling so it loses some of its chill.</li>
+            <li><strong class="lead">Fill the molds.</strong>
+                <note>Gently stir<side>recombine, don't fluff. a little separation / sediment after resting is normal. keep the rest of the batter in the fridge while batch 1 bakes, not next to the oven</side></note> the chilled batter to recombine it, then fill each cavity about <strong>¾ full</strong>, since the batter expands in the mold.</li>
+            <li><strong class="lead">Bake at high heat first.</strong>
+                Bake at <strong><note>480–485 °F for 10 minutes<side>only with a mold rated for this temperature — check yours</side></note></strong>.</li>
+            <li><strong class="lead">Lower the temperature.</strong>
+                <note>Without opening the oven<side>high heat sets the shell; the low stage finishes the inside while the outside keeps browning. turn the dial down and start the 2nd timer immediately — don't wait for the oven to fall to 350</side></note>, reduce the temperature to <strong>350 °F / 180 °C</strong> and continue baking for about <strong>60–70 minutes</strong>.</li>
+            <li><strong class="lead">Check the color.</strong>
+                The canelés should be <strong><note>deep mahogany brown<side>the surface you see in the oven becomes the bottom and runs lighter than the sides. near the end, carefully unmold one and look at the whole thing. too pale → back in its mold for 5 more min, then check again</side></note></strong>, not just golden. A dark caramelized shell is what gives them their characteristic crisp exterior.</li>
+            <li><strong class="lead">Unmold immediately.</strong>
+                Let the pan sit for only about 30 seconds, then <note>invert the canelés onto a cooling rack<side>set this up before opening the oven: rack over the tray, dry mitts, flip both together. rack holes must be small enough to hold them. never pry with a metal knife — soft utensils only, or the coating suffers</side></note>.</li>
+            <li><strong class="lead">Cool before eating.</strong>
+                Let them cool for <strong>at least 30–60 minutes</strong>. The crust becomes crisper as they cool, while the inside stays soft, moist, and custardy.<note><side>the rack isn't overnight storage — leftovers go in the fridge within 2 h</side></note></li>
         </ol>
 
-        <h2>Notes</h2>
-        <div class="notes">
-            <p><strong>Molds.</strong> Copper gives the best crust but demands the beeswax coating and careful seasoning. Silicone works — expect a slightly softer shell and bake on a preheated metal tray to compensate.</p>
-            <p><strong>Doming.</strong> If they puff out of the molds mid-bake ("white ass" canelés), pull the tray out, tap them down, and return — or bake 10 °C lower next time.</p>
-            <p><strong>Rum.</strong> It's aroma, not decoration. Substituting is legal; omitting is a misdemeanor.</p>
-        </div>
+        <h2>Earl Grey variant</h2>
+        <p>Same recipe, but the milk gets steeped first. Use about <strong>540 mL</strong> of milk instead of 500, since the tea bags absorb some.</p>
+        <ol class="method">
+            <li>Heat the milk on its own until <note>steaming and just below a boil<side>no butter yet — it goes in after the tea</side></note>.</li>
+            <li>Turn off the heat, add <strong>4–5 Earl Grey tea bags</strong>, cover, and steep for about <strong>8–10 minutes</strong>.</li>
+            <li>Remove the tea bags or strain out the leaves. <note>Don't squeeze the bags aggressively<side>that's where the bitterness comes from</side></note>.</li>
+            <li>Add the butter to the warm milk, bring it just to a boil, and continue from step 2 above.</li>
+        </ol>
 
         <footer class="fun-footer">
             <a href="../">← openzhicheng</a>
         </footer>
     </div>
+
+    <script type="module">
+        import { annotate } from 'https://unpkg.com/rough-notation?module';
+
+        const page = document.querySelector('.page');
+        const css = getComputedStyle(document.documentElement);
+        const accBg = css.getPropertyValue('--accent-bg').trim() || '#C8E6C9';
+        const wide = window.matchMedia('(min-width: 1180px)');
+
+        const pairs = [];   // { note, side }
+
+        document.querySelectorAll('note').forEach((note, i) => {
+            const side = note.querySelector(':scope > side');
+
+            // scribbled underline, same parameters as the homepage
+            // (a <note> with no text of its own just pins a thought — nothing to mark)
+            const hasText = [...note.childNodes].some(n => n.nodeType === 3 ? n.textContent.trim() : n.tagName !== 'SIDE');
+            if (hasText) {
+                annotate(note, {
+                    type: 'underline', color: accBg, strokeWidth: 2, padding: 1,
+                    iterations: 2, multiline: true, animate: false,
+                }).show();
+            }
+
+            if (!side) return;
+
+            side.remove();
+            const box = document.createElement('aside');
+            box.className = 'sidenote';
+            box.innerHTML = side.innerHTML;
+            pairs.push({ note, box });
+
+            const on = () => { note.classList.add('is-active'); box.classList.add('is-active'); };
+            const off = () => { note.classList.remove('is-active'); box.classList.remove('is-active'); };
+            note.addEventListener('mouseenter', on); note.addEventListener('mouseleave', off);
+            box.addEventListener('mouseenter', on);  box.addEventListener('mouseleave', off);
+        });
+
+        // Wide: notes go in the right margin, aligned with their passage and never overlapping.
+        // Narrow: each note is inserted right after the block that contains it.
+        const blockOf = note => note.closest('li, p, div');
+        function layout() {
+            pairs.forEach(({ note }) => { blockOf(note).style.marginBottom = ''; });
+            if (wide.matches) {
+                const pageTop = () => page.getBoundingClientRect().top;
+                let floor = 0;
+                pairs.forEach(({ note, box }) => {
+                    page.appendChild(box);
+                    const top = note.getBoundingClientRect().top - pageTop();
+                    const y = Math.max(top - 2, floor);
+                    box.style.top = y + 'px';
+                    floor = y + box.offsetHeight + 10;
+                    // let the passage's block grow so the next step starts below its notes
+                    const block = blockOf(note);
+                    const blockBottom = block.getBoundingClientRect().bottom - pageTop();
+                    const overflow = floor - 10 - blockBottom;
+                    if (overflow > 0) {
+                        block.style.marginBottom = (parseFloat(getComputedStyle(block).marginBottom) + overflow) + 'px';
+                    }
+                });
+            } else {
+                pairs.forEach(({ note, box }) => {
+                    box.style.top = '';
+                    const block = blockOf(note);
+                    block.insertAdjacentElement(block.tagName === 'LI' ? 'beforeend' : 'afterend', box);
+                });
+            }
+        }
+        layout();
+        wide.addEventListener('change', layout);
+        new ResizeObserver(layout).observe(page);
+        document.fonts?.ready.then(layout);
+    </script>
 </body>
 </html>
