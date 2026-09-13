@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Driving</title>
+    <meta name="description" content="SCCA license schools and outdoor karting within reach of San Diego, on a map." />
+    <meta name="robots" content="noindex" />
+    <link rel="icon" media="(prefers-color-scheme:dark)" href="/assets/img/favicon-dark.png" type="image/png" />
+    <link rel="icon" media="(prefers-color-scheme:light)" href="/assets/img/favicon.png" type="image/png" />
+    <link rel="stylesheet" href="/openzhicheng/fun.css" />
+    <link rel="preload" as="image" href="https://s2.svgbox.net/pen-brushes.svg?ic=brush-1&color=c8e6c9" />
+    <link rel="preload" as="image" href="https://s2.svgbox.net/pen-brushes.svg?ic=brush-1&color=f6d5bd" />
+    <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@5.6.0/dist/maplibre-gl.css" />
+    <script src="https://unpkg.com/maplibre-gl@5.6.0/dist/maplibre-gl.js"></script>
+    <style>
+        :root {
+            --ink: #2E8B57;          /* SCCA — homepage sea green */
+            --ink-bg: #C8E6C9;
+            --kart: #C9622B;         /* karting — terracotta, so the two kinds read apart on a map */
+            --kart-bg: #F6D5BD;
+        }
+
+        .page { max-width: 960px; padding-bottom: 2rem; }
+        h1 { margin-bottom: 1rem; }
+        h1 img { vertical-align: -0.35rem; margin-right: 0.35rem; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.12)); }
+
+        /* rough.js draws borders into these overlays, behind the content */
+        .sketch { position: relative; isolation: isolate; }
+        .sketch > svg.rough { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; z-index: -1; }
+
+        /* ---------- filters ---------- */
+        .filters { display: flex; flex-wrap: wrap; gap: 0.5rem 1.25rem; margin: 0 0 0.9rem; padding: 0.25rem 0.35rem; }
+        .filters button {
+            font: 400 1.05rem/1.3 var(--font-family); color: var(--text-color); background: none; border: 0;
+            cursor: pointer; padding: 2px 6px; margin: -2px 0; display: inline-flex; align-items: center; gap: 0.5rem;
+        }
+        .filters button .box { display: inline-block; width: 18px; height: 18px; position: relative; }
+        .filters button .box svg { position: absolute; inset: -4px; width: 26px; height: 26px; overflow: visible; }
+        .filters button:not(.on) { color: var(--text-light); }
+        .filters button.on[data-kind="scca"] { background: url("https://s2.svgbox.net/pen-brushes.svg?ic=brush-1&color=c8e6c9") no-repeat; background-size: 100% 100%; }
+        .filters button.on[data-kind="kart"] { background: url("https://s2.svgbox.net/pen-brushes.svg?ic=brush-1&color=f6d5bd") no-repeat; background-size: 100% 100%; }
+        .filters .count { color: var(--text-light); font-size: 0.9rem; }
+
+        /* ---------- map ---------- */
+        .map-wrap { padding: 6px; }
+        #map { width: 100%; height: calc(100svh - 14rem); min-height: 420px; max-height: 720px; background: #ffffff; }
+        #map .maplibregl-ctrl-attrib { font: 11px/1.3 var(--font-family); background: rgba(255,255,255,0.7); }
+        #map .maplibregl-ctrl-attrib a { color: var(--text-light); }
+        #map .maplibregl-ctrl-group { box-shadow: none; border: 1px solid var(--hairline); border-radius: 6px; }
+        .note-toggle {
+            font: 400 0.85rem var(--font-family); color: var(--text-light); background: none; border: 0; cursor: pointer;
+            padding: 0 3px; margin: 0.45rem 0.35rem 0; text-decoration: underline; text-decoration-color: var(--hairline); text-underline-offset: 3px;
+        }
+        .note-toggle:hover, .note-toggle[aria-expanded="true"] { color: var(--accent-text); text-decoration-color: var(--ink-bg); }
+        .map-note { color: var(--text-light); font-size: 0.9rem; margin: 0.25rem 0.35rem 0; }
+
+        /* pins are small rough-drawn drops; the tip sits on the coordinate */
+        .pin { width: 26px; height: 34px; cursor: pointer; filter: drop-shadow(0 1px 1px rgba(0,0,0,0.25)); }
+        .pin svg { width: 26px; height: 34px; overflow: visible; display: block; transform-origin: 50% 100%; transition: transform 0.12s ease; }
+        .pin:hover svg, .pin.is-open svg { transform: scale(1.18); }
+
+        /* ---------- info card ---------- */
+        .card {
+            position: absolute; left: 14px; bottom: 14px; z-index: 5; width: min(360px, calc(100% - 28px));
+            background: var(--bg-color); padding: 0.85rem 1rem 0.9rem; font-size: 0.98rem; line-height: 1.45;
+        }
+        .card[hidden] { display: none; }
+        .card .kind { font-size: 0.82rem; color: var(--text-light); letter-spacing: 0.02em; }
+        .card .kind.kart { color: var(--kart); }
+        .card .kind.scca { color: var(--ink); }
+        .card h3 { font-size: 1.12rem; font-weight: 600; margin: 0.1rem 0 0.15rem; padding: 0 3px; display: inline-block; }
+        .card .where { color: var(--text-light); font-size: 0.92rem; margin: 0 0 0.45rem; }
+        .card .where .dim { opacity: 0.6; }
+        .origin { width: 12px; height: 12px; }
+        .origin svg { width: 12px; height: 12px; overflow: visible; display: block; }
+        .card .line { margin: 0 0 0.35rem; }
+        .card .more { margin-top: 0.4rem; }
+        .card .more p { margin: 0 0 0.45rem; }
+        .card .more p:last-child { margin-bottom: 0; }
+        .card .more b { font-weight: 600; }
+        .card .links { display: flex; flex-wrap: wrap; gap: 0.35rem 1rem; margin-top: 0.55rem; font-size: 0.92rem; }
+        .card .links a { text-decoration: underline; text-decoration-color: var(--ink-bg); text-underline-offset: 3px; }
+        .card.kart .links a { color: var(--kart); text-decoration-color: var(--kart-bg); }
+        .card .toggle {
+            font: 400 0.95rem var(--font-family); color: var(--accent-hover); background: none; border: 0; cursor: pointer;
+            padding: 0 3px; margin-top: 0.35rem; display: inline-block;
+        }
+        .card.kart .toggle { color: var(--kart); }
+        .card .close {
+            position: absolute; top: 4px; right: 6px; font: 400 1.25rem/1 var(--font-family); color: var(--text-light);
+            background: none; border: 0; cursor: pointer; padding: 4px 6px;
+        }
+        .card .close:hover { color: var(--text-color); }
+
+        @media (max-width: 600px) {
+            body { font-size: 15px; }
+            #map { height: calc(100svh - 12rem); min-height: 380px; }
+            .card { left: 8px; right: 8px; bottom: 8px; width: auto; max-height: 60%; overflow: auto; }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <a class="back-link" href="/openzhicheng/">← openzhicheng</a>
+        <h1><img src="/assets/emoji/racing-car.png" alt="" width="36" height="36" />Driving</h1>
+
+        <div class="sketch" id="filters-wrap">
+            <div class="filters" id="filters">
+                <button class="on" data-kind="scca"><span class="box"></span>SCCA license programs</button>
+                <button class="on" data-kind="kart"><span class="box"></span>Outdoor karting</button>
+            </div>
+        </div>
+
+        <div class="sketch map-wrap" id="map-wrap">
+            <div id="map"></div>
+            <div class="sketch card" id="card" hidden></div>
+        </div>
+        <button class="note-toggle" id="note-toggle" aria-expanded="false">notes</button>
+        <p class="map-note" id="map-note" hidden>Drives are routed from UCSD by <a href="https://github.com/valhalla/valhalla" target="_blank" rel="noopener">Valhalla</a> on OpenStreetMap data. Prices are what each place published when I looked; confirm before booking.</p>
+
+        <footer class="fun-footer">
+            <a href="/openzhicheng/">← openzhicheng</a>
+        </footer>
+    </div>
+
+    <script type="module">
+        // =====================================================================
+        //  PLACES — edit this list by hand.
+        //    kind : "scca" (license school) or "kart" (outdoor karting)
+        //    line : the one thing to know, shown on the small card
+        //    more : paragraphs shown when the card is expanded (HTML ok)
+        // =====================================================================
+        const PLACES = [
+            { kind: "scca", name: "SCCA San Francisco Region Drivers' School", where: "Thunderhill, Willows, CA", drive: "≈ 9 h",
+              lat: 39.5387, lng: -122.3323,
+              line: "$1,270 for the three-day 2026 school.",
+              more: [
+                "<b>Catch:</b> needs a competition-ready car. A rental plus safety gear adds a lot to the price.",
+                "The 2026 school has already run; watch for next year's dates.",
+              ],
+              links: [["sfrscca.org", "https://www.sfrscca.org/"], ["Thunderhill", "https://www.thunderhill.com/"]] },
+
+            { kind: "scca", name: "Podium Club Racing Academy", where: "Casa Grande, AZ", drive: "≈ 5 h",
+              lat: 32.8176, lng: -111.8348,
+              line: "$2,895 for two days.",
+              more: [
+                "<b>Catch:</b> gives novice-school credit plus one event credit, not immediate full-license eligibility.",
+                "Confirm car arrangements and beginner prerequisites before signing up.",
+              ],
+              links: [["podiumclub.com", "https://www.podiumclub.com/"]] },
+
+            { kind: "scca", name: "DK Racing School — SCCA Novice Permit course", where: "Willow Springs, Rosamond, CA", drive: "≈ 3 h",
+              lat: 34.8751, lng: -118.2646,
+              line: "Tuition needs a quote.",
+              more: [
+                "<b>Good:</b> explicitly accepts beginners and street cars, so possibly no school-car rental.",
+                "Program verified; current price not.",
+              ],
+              links: [["dkracingschool.com", "https://dkracingschool.com/dkracingschool"], ["Willow Springs", "https://www.willowspringsraceway.com/"]] },
+
+            { kind: "kart", name: "K1 Circuit", where: "Winchester, CA", drive: "1½–2 h",
+              lat: 33.7160, lng: -117.0973,
+              line: "$40 / $75 / $105 for 1 / 2 / 3 races, plus $49.95 annual membership.",
+              more: [
+                "Outdoor electric rental karts. Arrive-and-drive, coaching, and race clinics.",
+                "<b>Best straightforward first visit.</b>",
+              ],
+              links: [["k1circuit.com", "https://www.k1circuit.com/"]] },
+
+            { kind: "kart", name: "Apex Motorsports Park", where: "Perris, CA", drive: "1¾–2¼ h",
+              lat: 33.8590, lng: -117.2039,
+              line: "Request a quote; arrange rentals ahead.",
+              more: [
+                "Outdoor 0.9-mile circuit. The site advertises kart rentals for newcomers and experienced drivers.",
+                "No public rental-package price on the page I checked.",
+              ],
+              links: [["apexmotorsportspark.com", "https://apexmotorsportspark.com/"]] },
+
+            { kind: "kart", name: "Adams Motorsports Park", where: "Riverside, CA", drive: "2–2½ h",
+              lat: 34.0118, lng: -117.3837,
+              line: "Coaching inquiry, not a walk-in rental visit.",
+              more: [
+                "Outdoor kart circuit with structured instruction through Troy Adams Coaching.",
+                "Request a lesson quote and explicitly confirm kart / equipment provision.",
+              ],
+              links: [["adamsmotorsportspark.com", "https://www.adamsmotorsportspark.com/"], ["Troy Adams Coaching", "https://www.troyadamscoaching.com/"]] },
+
+            { kind: "kart", name: "RSF Kart Club", where: "Rancho Santa Fe, CA", drive: "30–50 min",
+              lat: 33.0452, lng: -117.1772,
+              line: "Private club — membership / tour inquiry, not arrive-and-drive.",
+              more: [
+                "Local private karting club. Pricing is not stated on its membership page.",
+              ],
+              links: [["rsfkartclub.com", "https://rsfkartclub.com/"]] },
+        ];
+
+        // Basemap: OpenFreeMap vector tiles (no key), styled by ./style.json to match my light Google style.
+        const STYLE = new URL('./style.json', import.meta.url).href;
+        // Routing: Valhalla on the FOSSGIS public server (free, fair use: ~1 req/s per user, no SLA).
+        const ORIGIN = { lat: 32.8801, lng: -117.2340 };          // UCSD — where the drives start from
+        const VALHALLA = 'https://valhalla1.openstreetmap.de/route';
+        const CLIENT_ID = 'huangworld.github.io';
+        // =====================================================================
+
+        import rough from 'https://unpkg.com/roughjs@4.6.6/bundled/rough.esm.js';
+
+        const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+        const COLORS = { scca: { ink: css('--ink'), bg: css('--ink-bg') }, kart: { ink: css('--kart'), bg: css('--kart-bg') } };
+        const LABEL = { scca: 'SCCA license program', kart: 'Outdoor karting' };
+        const opts = { strokeWidth: 1.1, roughness: 1.4, bowing: 1.2, seed: 7 };
+        const SVG = 'http://www.w3.org/2000/svg';
+
+        function overlayFor(wrap) {
+            let svg = wrap.querySelector(':scope > svg.rough');
+            if (!svg) { svg = document.createElementNS(SVG, 'svg'); svg.setAttribute('class', 'rough'); svg.setAttribute('preserveAspectRatio', 'none'); wrap.prepend(svg); }
+            svg.replaceChildren();
+            const r = wrap.getBoundingClientRect();
+            svg.setAttribute('viewBox', `0 0 ${r.width} ${r.height}`);
+            return { svg, rc: rough.svg(svg), origin: r };
+        }
+        const rel = (rect, origin) => ({ x: rect.left - origin.left, y: rect.top - origin.top, w: rect.width, h: rect.height });
+
+        // ---------- filters ----------
+        const on = { scca: true, kart: true };
+        const filterBtns = [...document.querySelectorAll('#filters button')];
+
+        function drawCheckbox(btn) {
+            const kind = btn.dataset.kind, box = btn.querySelector('.box');
+            box.replaceChildren();
+            const svg = document.createElementNS(SVG, 'svg'); svg.setAttribute('viewBox', '-4 -4 26 26');
+            const rc = rough.svg(svg);
+            svg.appendChild(rc.rectangle(0, 0, 18, 18, { ...opts, stroke: on[kind] ? COLORS[kind].ink : '#9a9a96', seed: kind === 'scca' ? 21 : 22 }));
+            if (on[kind]) svg.appendChild(rc.path('M 3 9 L 8 14 L 16 2', { ...opts, stroke: COLORS[kind].ink, strokeWidth: 2, seed: 23, roughness: 1.2 }));
+            box.appendChild(svg);
+        }
+
+        function sketchFilters() {
+            const wrap = document.getElementById('filters-wrap');
+            const { svg, rc, origin } = overlayFor(wrap);
+            const r = rel(document.getElementById('filters').getBoundingClientRect(), origin);
+            svg.appendChild(rc.line(r.x, r.y + r.h, r.x + r.w, r.y + r.h, { ...opts, stroke: COLORS.scca.bg, strokeWidth: 2, seed: 41 }));
+        }
+
+        filterBtns.forEach(btn => {
+            drawCheckbox(btn);
+            btn.onclick = () => {
+                const k = btn.dataset.kind;
+                on[k] = !on[k];
+                btn.classList.toggle('on', on[k]);
+                drawCheckbox(btn);
+                applyFilters();
+            };
+        });
+
+        // ---------- map ----------
+        const mapEl = document.getElementById('map');
+        const cardEl = document.getElementById('card');
+        let map, markers = [], open = null, expanded = false;
+
+        function pinSvg(kind) {
+            const svg = document.createElementNS(SVG, 'svg'); svg.setAttribute('viewBox', '0 0 26 34');
+            const rc = rough.svg(svg);
+            const c = COLORS[kind];
+            // a drop: circle head, short tail to the tip at (13, 34)
+            svg.appendChild(rc.circle(13, 12, 20, { ...opts, stroke: c.ink, fill: c.bg, fillStyle: 'hachure', hachureGap: 3, fillWeight: 1.2, seed: kind === 'scca' ? 3 : 5 }));
+            svg.appendChild(rc.line(13, 22, 13, 33, { ...opts, stroke: c.ink, strokeWidth: 1.6, seed: 8 }));
+            return svg;
+        }
+
+        function sketchCard() {
+            if (cardEl.hidden) return;
+            const { svg, rc, origin } = overlayFor(cardEl);
+            const c = COLORS[open.kind];
+            svg.appendChild(rc.rectangle(1, 1, origin.width - 2, origin.height - 2, { ...opts, stroke: c.ink, fill: '#F7F9FC', fillStyle: 'solid', seed: 13 }));
+            const h = cardEl.querySelector('h3');
+            if (h) {
+                const r = rel(h.getBoundingClientRect(), origin);
+                const y = r.y + r.h - 3;
+                svg.appendChild(rc.line(r.x, y, r.x + r.w, y, { ...opts, stroke: c.bg, strokeWidth: 3, seed: 17, roughness: 2 }));
+            }
+        }
+
+        function renderCard() {
+            const p = open;
+            cardEl.className = 'sketch card ' + p.kind;
+            cardEl.innerHTML = `
+                <button class="close" aria-label="Close">×</button>
+                <div class="kind ${p.kind}">${LABEL[p.kind]}</div>
+                <h3>${p.name}</h3>
+                <p class="where">${p.where} · ${p.route ? `${p.route.text} drive` : p.routeFailed ? `${p.drive} drive` : `${p.drive} drive <span class="dim">(routing…)</span>`}</p>
+                <p class="line">${p.line}</p>
+                ${expanded ? `<div class="more">${p.more.map(m => `<p>${m}</p>`).join('')}
+                    <div class="links">${p.links.map(([t, u]) => `<a href="${u}" target="_blank" rel="noopener">${t} ↗</a>`).join('')}
+                        <a href="https://www.google.com/maps/dir/?api=1&destination=${p.lat},${p.lng}" target="_blank" rel="noopener">directions ↗</a>
+                    </div></div>` : ''}
+                <button class="toggle">${expanded ? 'less ↑' : 'more ↓'}</button>`;
+            cardEl.hidden = false;
+            cardEl.querySelector('.close').onclick = closeCard;
+            cardEl.querySelector('.toggle').onclick = () => { expanded = !expanded; renderCard(); };
+            requestAnimationFrame(sketchCard);
+        }
+
+        function openCard(m) {
+            if (open === m.place) { expanded = !expanded; renderCard(); return; }
+            markers.forEach(x => x.content.classList.remove('is-open'));
+            m.content.classList.add('is-open');
+            open = m.place; expanded = false;
+            renderCard();
+            showRoute(m.place);
+        }
+        function closeCard() {
+            open = null; expanded = false; cardEl.hidden = true;
+            markers.forEach(x => x.content.classList.remove('is-open'));
+            setRoute(null);
+        }
+
+        // ---------- routing (Valhalla) ----------
+        // Google-style polyline, precision 1e6 as Valhalla encodes it
+        function decodePolyline(str) {
+            let i = 0, lat = 0, lng = 0; const out = [];
+            while (i < str.length) {
+                for (const which of [0, 1]) {
+                    let shift = 0, result = 0, b;
+                    do { b = str.charCodeAt(i++) - 63; result |= (b & 0x1f) << shift; shift += 5; } while (b >= 0x20);
+                    const d = (result & 1) ? ~(result >> 1) : (result >> 1);
+                    if (which === 0) lat += d; else lng += d;
+                }
+                out.push([lng / 1e6, lat / 1e6]);
+            }
+            return out;
+        }
+        const fmtDrive = (sec, mi) => {
+            const m = Math.round(sec / 60), h = Math.floor(m / 60), mm = m % 60;
+            return (h ? `${h} h ${mm ? mm + ' min' : ''}` : `${mm} min`).trim() + ` · ${Math.round(mi)} mi`;
+        };
+        const routeCache = new Map();
+        function fetchRoute(p) {
+            if (!routeCache.has(p)) {
+                const body = { locations: [{ lat: ORIGIN.lat, lon: ORIGIN.lng }, { lat: p.lat, lon: p.lng }], costing: 'auto', units: 'miles' };
+                routeCache.set(p, fetch(VALHALLA, { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-Client-Id': CLIENT_ID }, body: JSON.stringify(body) })
+                    .then(r => r.ok ? r.json() : Promise.reject(new Error('HTTP ' + r.status)))
+                    .then(j => {
+                        const leg = j.trip.legs[0], sum = j.trip.summary;
+                        p.route = { text: fmtDrive(sum.time, sum.length), coords: decodePolyline(leg.shape) };
+                        return p.route;
+                    })
+                    .catch(err => { console.warn('route', p.name, err); p.routeFailed = true; routeCache.delete(p); return null; }));
+            }
+            return routeCache.get(p);
+        }
+        function setRoute(p) {
+            const src = map.getSource('route');
+            if (!src) return;
+            src.setData(p?.route ? { type: 'Feature', geometry: { type: 'LineString', coordinates: p.route.coords }, properties: { kind: p.kind } }
+                                 : { type: 'FeatureCollection', features: [] });
+        }
+        async function showRoute(p) {
+            setRoute(p);                                   // shows immediately if cached
+            if (p.route) return;
+            await fetchRoute(p);
+            if (open === p) { renderCard(); setRoute(p); }
+        }
+
+        function applyFilters() {
+            markers.forEach(m => { on[m.place.kind] ? m.addTo(map) : m.remove(); });
+            if (open && !on[open.kind]) closeCard();
+            fitVisible();
+        }
+
+        function fitVisible() {
+            const vis = markers.filter(m => on[m.place.kind]);
+            if (!vis.length || !map) return;
+            const b = new maplibregl.LngLatBounds();
+            vis.forEach(m => b.extend(m.getLngLat()));
+            map.fitBounds(b, { padding: { top: 60, bottom: 60, left: 50, right: 50 }, maxZoom: 11, duration: 500 });
+        }
+
+        map = new maplibregl.Map({
+            container: mapEl, style: STYLE,
+            center: [-117.2, 33.3], zoom: 6,
+            attributionControl: { compact: true }, dragRotate: false, pitchWithRotate: false,
+        });
+        map.touchZoomRotate.disableRotation();
+        map.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'top-right');
+        markers = PLACES.map(p => {
+            const content = document.createElement('div');
+            content.className = 'pin ' + p.kind; content.title = p.name;
+            content.appendChild(pinSvg(p.kind));
+            const m = new maplibregl.Marker({ element: content, anchor: 'bottom' }).setLngLat([p.lng, p.lat]).addTo(map);
+            m.place = p; m.content = content;
+            content.addEventListener('click', e => { e.stopPropagation(); openCard(m); });
+            return m;
+        });
+        map.on('click', closeCard);
+        map.on('load', () => {
+            map.addSource('route', { type: 'geojson', data: { type: 'FeatureCollection', features: [] } });
+            map.addLayer({
+                id: 'route', type: 'line', source: 'route',
+                layout: { 'line-cap': 'round', 'line-join': 'round' },
+                paint: { 'line-color': ['match', ['get', 'kind'], 'kart', COLORS.kart.ink, COLORS.scca.ink],
+                         'line-width': 3, 'line-opacity': 0.75, 'line-dasharray': [2.2, 1.4] },
+            }, 'waterway_line_label');                    // under the labels, over the roads
+            fitVisible();
+        });
+        // where the drives start: a small pencil dot at UCSD
+        {
+            const el = document.createElement('div'); el.className = 'origin'; el.title = 'from UCSD';
+            const svg = document.createElementNS(SVG, 'svg'); svg.setAttribute('viewBox', '0 0 12 12');
+            svg.appendChild(rough.svg(svg).circle(6, 6, 9, { ...opts, stroke: '#555', fill: '#555', fillStyle: 'solid', seed: 2 }));
+            el.appendChild(svg);
+            new maplibregl.Marker({ element: el, anchor: 'center' }).setLngLat([ORIGIN.lng, ORIGIN.lat]).addTo(map);
+        }
+        map.on('error', e => console.warn('map', e.error?.message || e));
+
+        // ---------- notes toggle ----------
+        const noteBtn = document.getElementById('note-toggle'), note = document.getElementById('map-note');
+        noteBtn.onclick = () => { note.hidden = !note.hidden; noteBtn.setAttribute('aria-expanded', String(!note.hidden)); };
+
+        // ---------- sketchy borders ----------
+        function sketchMap() {
+            const wrap = document.getElementById('map-wrap');
+            const { svg, rc, origin } = overlayFor(wrap);
+            svg.appendChild(rc.rectangle(2, 2, origin.width - 4, origin.height - 4, { ...opts, stroke: COLORS.scca.ink, strokeWidth: 1.3, seed: 31 }));
+        }
+        function sketchAll() { sketchFilters(); sketchMap(); sketchCard(); }
+        sketchAll();
+        let raf;
+        const ro = new ResizeObserver(() => { cancelAnimationFrame(raf); raf = requestAnimationFrame(sketchAll); });
+        ['.page', '#filters-wrap', '#map-wrap', '#card'].forEach(sel => ro.observe(document.querySelector(sel)));
+        window.addEventListener('resize', () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(sketchAll); });
+        document.fonts?.ready.then(sketchAll);
+    </script>
+</body>
+</html>
