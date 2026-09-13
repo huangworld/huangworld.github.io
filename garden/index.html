@@ -8,12 +8,9 @@
     <meta name="robots" content="noindex" />
     <link rel="icon" media="(prefers-color-scheme:dark)" href="/assets/img/favicon-dark.png" type="image/png" />
     <link rel="icon" media="(prefers-color-scheme:light)" href="/assets/img/favicon.png" type="image/png" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" />
     <link rel="stylesheet" href="/openzhicheng/fun.css" />
     <style>
-        :root { --accent-bg: #C8E6C9; --ink: #2E8B57; --hand: "Patrick Hand", "Segoe Print", "Bradley Hand", cursive; }
+        :root { --accent-bg: #C8E6C9; --ink: #2E8B57; }
 
         .page { max-width: 760px; }
         h1 { margin-bottom: 1.5rem; }
@@ -33,7 +30,7 @@
         .cal-head h2 { margin: 0; padding: 0; border: 0; }
         .cal-nav { display: flex; gap: 0.25rem; }
         .cal-nav button {
-            font: 1.25rem/1 var(--hand); color: var(--ink); background: none; border: 0;
+            font: 1.25rem/1 var(--font-family); color: var(--ink); background: none; border: 0;
             cursor: pointer; padding: 0.15rem 0.5rem; border-radius: 6px;
         }
         .cal-nav button:hover { background: var(--accent-bg); }
@@ -41,12 +38,12 @@
 
         .cal { width: 100%; border-collapse: collapse; table-layout: fixed; }
         .cal th {
-            font: 400 1rem var(--hand); color: var(--text-light); text-align: left;
+            font: 400 1rem var(--font-family); color: var(--text-light); text-align: left;
             padding: 0.2rem 0.4rem 0.35rem; font-weight: 400;
         }
         .cal td { vertical-align: top; height: 4.4rem; padding: 0.3rem 0.35rem; }
         .cal td.other { opacity: 0.35; }
-        .cal .day { font: 400 1.05rem/1 var(--hand); color: var(--text-color); display: inline-block; padding: 2px 4px; }
+        .cal .day { font: 400 1.05rem/1 var(--font-family); color: var(--text-color); display: inline-block; padding: 2px 4px; }
         .cal td.today .day { color: var(--ink); font-weight: 400; }
         .cal .due { display: flex; flex-wrap: wrap; gap: 3px; margin-top: 0.3rem; }
         .cal .due img { width: 26px; height: 26px; }
@@ -60,7 +57,7 @@
         .plants .top { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; }
         .plants .name { font-weight: 600; }
         .plants .desc { color: var(--text-light); font-size: 0.95rem; margin: 0.1rem 0 0; }
-        .plants .sched { font: 400 1.05rem/1.2 var(--hand); color: var(--ink); white-space: nowrap; text-align: right; flex-shrink: 0; }
+        .plants .sched { font: 400 1.05rem/1.2 var(--font-family); color: var(--ink); white-space: nowrap; text-align: right; flex-shrink: 0; }
         .plants .sched .when { display: inline-block; padding: 0 3px; }
         .plants .sched small { display: block; color: var(--text-light); font-size: 0.88rem; }
 

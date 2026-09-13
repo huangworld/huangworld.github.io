@@ -10,6 +10,7 @@
     --accent-hover: #1f6b42;
     --hairline: rgba(0, 0, 0, 0.08);
     --radius: 12px;
+    --font-family: 'Lora', monospace; /* Same font stack as the homepage. */
 }
 
 * { box-sizing: border-box; }
@@ -19,8 +20,7 @@ body {
     padding: 0;
     background: var(--bg-color);
     color: var(--text-color);
-    font: 17px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-        "Helvetica Neue", Arial, sans-serif;
+    font: 17px/1.6 var(--font-family);
     -webkit-font-smoothing: antialiased;
 }
 
