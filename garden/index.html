@@ -4,31 +4,284 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>Garden</title>
-    <meta name="description" content="Zhicheng's plant and vegetable tracker." />
+    <meta name="description" content="Zhicheng's plants and their watering schedule." />
     <meta name="robots" content="noindex" />
     <link rel="icon" media="(prefers-color-scheme:dark)" href="/assets/img/favicon-dark.png" type="image/png" />
     <link rel="icon" media="(prefers-color-scheme:light)" href="/assets/img/favicon.png" type="image/png" />
-    <link rel="stylesheet" href="./garden.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" />
+    <link rel="stylesheet" href="/openzhicheng/fun.css" />
+    <style>
+        :root { --accent-bg: #C8E6C9; --ink: #2E8B57; --hand: "Patrick Hand", "Segoe Print", "Bradley Hand", cursive; }
+
+        .page { max-width: 760px; }
+        h1 { margin-bottom: 1.5rem; }
+        h1 img { vertical-align: -0.35rem; margin-right: 0.35rem; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.12)); }
+
+        /* rough.js draws the borders into these overlays, behind the content */
+        /* .sketch is its own stacking context with the page colour painted, so the multiply-blended
+           plant art has a real backdrop; the overlay sits at z-index -1, under the content */
+        .sketch { position: relative; isolation: isolate; background: var(--bg-color); }
+        .sketch > svg.rough { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; z-index: -1; }
+
+        /* plant art comes on a white square; multiply hides it on the off-white page */
+        .plant-img { mix-blend-mode: multiply; object-fit: contain; }
+
+        /* ---------- calendar ---------- */
+        .cal-head { display: flex; align-items: baseline; justify-content: space-between; margin: 0 0 0.6rem; }
+        .cal-head h2 { margin: 0; padding: 0; border: 0; }
+        .cal-nav { display: flex; gap: 0.25rem; }
+        .cal-nav button {
+            font: 1.25rem/1 var(--hand); color: var(--ink); background: none; border: 0;
+            cursor: pointer; padding: 0.15rem 0.5rem; border-radius: 6px;
+        }
+        .cal-nav button:hover { background: var(--accent-bg); }
+        .cal-nav button:disabled { opacity: 0.3; cursor: default; background: none; }
+
+        .cal { width: 100%; border-collapse: collapse; table-layout: fixed; }
+        .cal th {
+            font: 400 1rem var(--hand); color: var(--text-light); text-align: left;
+            padding: 0.2rem 0.4rem 0.35rem; font-weight: 400;
+        }
+        .cal td { vertical-align: top; height: 4.4rem; padding: 0.3rem 0.35rem; }
+        .cal td.other { opacity: 0.35; }
+        .cal .day { font: 400 1.05rem/1 var(--hand); color: var(--text-color); display: inline-block; padding: 2px 4px; }
+        .cal td.today .day { color: var(--ink); font-weight: 400; }
+        .cal .due { display: flex; flex-wrap: wrap; gap: 3px; margin-top: 0.3rem; }
+        .cal .due img { width: 26px; height: 26px; }
+        .cal .due img:hover { transform: scale(1.35); transition: transform 0.12s ease; }
+
+        /* ---------- plant rows ---------- */
+        .plants { list-style: none; margin: 0; padding: 0; }
+        .plants li { display: flex; align-items: center; gap: 1rem; padding: 0.9rem 0.35rem; }
+        .plants .plant-img { width: 72px; height: 72px; flex-shrink: 0; }
+        .plants .body { flex: 1; min-width: 0; }
+        .plants .top { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; }
+        .plants .name { font-weight: 600; }
+        .plants .desc { color: var(--text-light); font-size: 0.95rem; margin: 0.1rem 0 0; }
+        .plants .sched { font: 400 1.05rem/1.2 var(--hand); color: var(--ink); white-space: nowrap; text-align: right; flex-shrink: 0; }
+        .plants .sched .when { display: inline-block; padding: 0 3px; }
+        .plants .sched small { display: block; color: var(--text-light); font-size: 0.88rem; }
+
+        @media (max-width: 520px) {
+            body { font-size: 15px; }
+            .cal td { height: 3.6rem; padding: 0.2rem; }
+            .cal .due img { width: 20px; height: 20px; }
+            .plants li { gap: 0.75rem; }
+            .plants .plant-img { width: 56px; height: 56px; }
+        }
+    </style>
 </head>
 <body>
-    <header class="topbar">
-        <h1 id="view-title">Today</h1>
-        <button id="refresh-btn" class="icon-btn" title="Refresh" aria-label="Refresh">↻</button>
-    </header>
+    <div class="page">
+        <a class="back-link" href="/openzhicheng/">← openzhicheng</a>
+        <h1><img src="/assets/emoji/seedling.png" alt="" width="36" height="36" />Garden</h1>
 
-    <div id="banner" class="banner" hidden></div>
+        <div class="cal-head">
+            <h2 id="cal-title">September</h2>
+            <div class="cal-nav">
+                <button id="cal-prev" aria-label="Previous month">←</button>
+                <button id="cal-today">today</button>
+                <button id="cal-next" aria-label="Next month">→</button>
+            </div>
+        </div>
+        <div class="sketch" id="cal-wrap">
+            <table class="cal" id="cal"></table>
+        </div>
 
-    <main id="main" aria-live="polite"></main>
+        <h2>Plants</h2>
+        <div class="sketch" id="plants-wrap">
+            <ul class="plants" id="plants"></ul>
+        </div>
 
-    <nav class="tabbar">
-        <a href="#/" data-tab="today"><img class="tab-icon" src="/assets/emoji/sun.png" alt="" width="22" height="22" />Today</a>
-        <a href="#/all" data-tab="all"><img class="tab-icon" src="/assets/emoji/potted-plant.png" alt="" width="22" height="22" />Plants</a>
-        <a href="#/add" data-tab="add"><img class="tab-icon" src="/assets/emoji/plus.png" alt="" width="22" height="22" />Add</a>
-        <a href="#/settings" data-tab="settings"><img class="tab-icon" src="/assets/emoji/gear.png" alt="" width="22" height="22" />Settings</a>
-    </nav>
+        <footer class="fun-footer">
+            <a href="/openzhicheng/">← openzhicheng</a>
+        </footer>
+    </div>
 
-    <div id="toast" class="toast" hidden></div>
+    <script type="module">
+        // =====================================================================
+        //  PLANTS — edit this list by hand.
+        //    img    : file in /assets/plants/
+        //    every  : days between waterings
+        //    start  : a day you watered it (YYYY-MM-DD); the schedule counts from here
+        //    watered: past days you actually watered it (shown on the calendar as history;
+        //             days before today only show these, days from today on show the schedule)
+        //    desc   : one or two sentences
+        // =====================================================================
+        const PLANTS = [
+            { name: "Money tree",               img: "money_tree.png",                 every: 10, start: "2026-09-07", watered: ["2026-09-07"],
+              desc: "Braided Pachira. Let the top couple of inches dry out between drinks; it would rather be forgotten than drowned." },
+            { name: "ZZ plant",                 img: "zz_plant.png",                   every: 18, start: "2026-09-07", watered: ["2026-09-07"],
+              desc: "Near-indestructible. Water only when the pot is fully dry; the rhizomes store the rest." },
+            { name: "Lemon lime prayer plant",  img: "lemon_lime_prayer_plant.png",    every: 5,  start: "2026-09-07", watered: ["2026-09-07"],
+              desc: "Maranta. Likes evenly moist soil and some humidity, and folds its leaves up at night." },
+            { name: "Black petunia",            img: "black_petunia.png",              every: 5,  start: "2026-09-12", watered: ["2026-09-07"],
+              desc: "Annual in a pot that drinks a lot in the sun. Water when the top inch is dry and deadhead to keep it blooming." },
+            { name: "Crazy Blue Russian sage",  img: "crazy_blue_russian_sage.png",    every: 5,  start: "2026-09-12", watered: ["2026-09-07"],
+              desc: "Perovskia. Full sun and drought-tolerant once established; overwatering is the only way to lose it." },
+            { name: "Eclipse coprosma",         img: "eclipse_coprosma.png",           every: 5,  start: "2026-09-12", watered: ["2026-09-07"],
+              desc: "Glossy, dark-leaved shrub. Moderate water; let the surface dry between drinks." },
+            { name: "Thai Delight bougainvillea", img: "thai_delight_bougainvillea.png", every: 5, start: "2026-09-12", watered: ["2026-09-07"],
+              desc: "Blooms best when a little stressed. Let it dry out, then water deeply." },
+        ];
+        // =====================================================================
 
-    <script type="module" src="./js/app.js"></script>
+        import rough from 'https://unpkg.com/roughjs@4.6.6/bundled/rough.esm.js';
+
+        const IMG = '/assets/plants/';
+        const DAY = 86400000;
+        const today = new Date(); today.setHours(0, 0, 0, 0);
+        const parse = s => { const [y, m, d] = s.split('-').map(Number); return new Date(y, m - 1, d); };
+        const days = (a, b) => Math.round((b - a) / DAY);
+        const fmt = d => d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+        PLANTS.forEach(p => {
+            p.startDate = parse(p.start);
+            p.history = new Set([...(p.watered || []), p.start].map(x => parse(x).getTime()));
+        });
+
+        // shown on date d? past = what actually happened, today onward = the schedule
+        const dueOn = (p, d) => {
+            if (d < today) return p.history.has(d.getTime());
+            const n = days(p.startDate, d); return n >= 0 && n % p.every === 0;
+        };
+        // next watering on/after today
+        const nextFor = p => {
+            const n = days(p.startDate, today);
+            const k = n <= 0 ? 0 : Math.ceil(n / p.every);
+            return new Date(p.startDate.getTime() + k * p.every * DAY);
+        };
+
+        // ---------- calendar ----------
+        const FIRST = new Date(2026, 8, 1);                      // calendar starts September 2026
+        let view = new Date(today.getFullYear(), today.getMonth(), 1);
+        if (view < FIRST) view = FIRST;
+        const prevBtn = document.getElementById('cal-prev');
+        const cal = document.getElementById('cal');
+        const title = document.getElementById('cal-title');
+
+        function renderCalendar() {
+            const y = view.getFullYear(), m = view.getMonth();
+            title.textContent = MONTHS[m] + ' ' + y;
+            prevBtn.disabled = view <= FIRST;
+            const first = new Date(y, m, 1);
+            const startOffset = first.getDay();                  // Sunday-first
+            const gridStart = new Date(y, m, 1 - startOffset);
+            const rows = [];
+            let d = gridStart;
+            for (let r = 0; r < 6; r++) {
+                const cells = [];
+                for (let c = 0; c < 7; c++) {
+                    const inMonth = d.getMonth() === m;
+                    const isToday = days(d, today) === 0;
+                    const due = PLANTS.filter(p => dueOn(p, d));
+                    cells.push(`<td class="${inMonth ? '' : 'other'}${isToday ? ' today' : ''}">
+                        <span class="day">${d.getDate()}</span>
+                        <div class="due">${due.map(p => `<img class="plant-img" src="${IMG}${p.img}" alt="${p.name}" title="${p.name}" />`).join('')}</div>
+                    </td>`);
+                    d = new Date(d.getTime() + DAY);
+                }
+                rows.push('<tr>' + cells.join('') + '</tr>');
+                if (r >= 3 && d.getMonth() !== m) break;          // stop after the month ends
+            }
+            cal.innerHTML = '<thead><tr>' + ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].map(w => `<th>${w}</th>`).join('') + '</tr></thead>'
+                          + '<tbody>' + rows.join('') + '</tbody>';
+            sketchAll();
+        }
+
+        prevBtn.onclick = () => { const v = new Date(view.getFullYear(), view.getMonth() - 1, 1); if (v >= FIRST) { view = v; renderCalendar(); } };
+        document.getElementById('cal-next').onclick = () => { view = new Date(view.getFullYear(), view.getMonth() + 1, 1); renderCalendar(); };
+        document.getElementById('cal-today').onclick = () => { view = new Date(today.getFullYear(), today.getMonth(), 1); renderCalendar(); };
+
+        // ---------- plant rows ----------
+        const list = document.getElementById('plants');
+        list.innerHTML = PLANTS.map(p => {
+            const next = nextFor(p);
+            const gap = days(today, next);
+            const when = gap === 0 ? 'water today' : gap === 1 ? 'tomorrow' : fmt(next);
+            return `<li class="${gap === 0 ? 'due-today' : ''}">
+                <img class="plant-img" src="${IMG}${p.img}" alt="" width="72" height="72" />
+                <div class="body">
+                    <div class="top">
+                        <span class="name">${p.name}</span>
+                        <span class="sched"><span class="when">${when}</span><small>every ${p.every} days</small></span>
+                    </div>
+                    <p class="desc">${p.desc}</p>
+                </div>
+            </li>`;
+        }).join('');
+
+        // ---------- sketchy borders (rough.js) ----------
+        const ink = getComputedStyle(document.documentElement).getPropertyValue('--ink').trim() || '#2E8B57';
+        const light = getComputedStyle(document.documentElement).getPropertyValue('--accent-bg').trim() || '#C8E6C9';
+        const opts = { stroke: ink, strokeWidth: 1.1, roughness: 1.4, bowing: 1.2, seed: 7 };
+
+        function overlayFor(wrap) {
+            let svg = wrap.querySelector(':scope > svg.rough');
+            if (!svg) {
+                svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+                svg.setAttribute('class', 'rough');
+                wrap.prepend(svg);
+            }
+            svg.replaceChildren();
+            const r = wrap.getBoundingClientRect();
+            svg.setAttribute('viewBox', `0 0 ${r.width} ${r.height}`);
+            return { svg, rc: rough.svg(svg), origin: r };
+        }
+        const rel = (rect, origin) => ({ x: rect.left - origin.left, y: rect.top - origin.top, w: rect.width, h: rect.height });
+
+        function sketchCalendar() {
+            const wrap = document.getElementById('cal-wrap');
+            const { svg, rc, origin } = overlayFor(wrap);
+            const table = rel(cal.getBoundingClientRect(), origin);
+            const head = cal.tHead.getBoundingClientRect();
+            const bodyTop = head.bottom - origin.top;
+            // outer box
+            svg.appendChild(rc.rectangle(table.x, bodyTop, table.w, table.h - (bodyTop - table.y), { ...opts, seed: 3 }));
+            // row lines
+            [...cal.tBodies[0].rows].slice(1).forEach((row, i) => {
+                const y = row.getBoundingClientRect().top - origin.top;
+                svg.appendChild(rc.line(table.x, y, table.x + table.w, y, { ...opts, seed: 11 + i, strokeWidth: 0.9 }));
+            });
+            // column lines
+            [...cal.tHead.rows[0].cells].slice(1).forEach((th, i) => {
+                const x = th.getBoundingClientRect().left - origin.left;
+                svg.appendChild(rc.line(x, bodyTop, x, table.y + table.h, { ...opts, seed: 31 + i, strokeWidth: 0.9 }));
+            });
+            // circle today
+            const t = cal.querySelector('td.today .day');
+            if (t) {
+                const c = rel(t.getBoundingClientRect(), origin);
+                svg.appendChild(rc.ellipse(c.x + c.w / 2, c.y + c.h / 2, c.w + 14, c.h + 10, { ...opts, strokeWidth: 1.6, seed: 9 }));
+            }
+        }
+
+        function sketchPlants() {
+            const wrap = document.getElementById('plants-wrap');
+            const { svg, rc, origin } = overlayFor(wrap);
+            const rows = [...list.children];
+            rows.forEach((li, i) => {
+                if (i === rows.length - 1) return;
+                const r = rel(li.getBoundingClientRect(), origin);
+                svg.appendChild(rc.line(r.x, r.y + r.h, r.x + r.w, r.y + r.h, { ...opts, stroke: light, strokeWidth: 2, seed: 50 + i }));
+            });
+            // scribble-underline the "water today" ones
+            list.querySelectorAll('li.due-today .when').forEach((el, i) => {
+                const r = rel(el.getBoundingClientRect(), origin);
+                const y = r.y + r.h - 2;
+                svg.appendChild(rc.line(r.x, y, r.x + r.w, y, { ...opts, stroke: light, strokeWidth: 2.5, seed: 70 + i, roughness: 2 }));
+            });
+        }
+
+        function sketchAll() { sketchCalendar(); sketchPlants(); }
+
+        renderCalendar();
+        let raf;
+        new ResizeObserver(() => { cancelAnimationFrame(raf); raf = requestAnimationFrame(sketchAll); }).observe(document.querySelector('.page'));
+        document.fonts?.ready.then(sketchAll);
+    </script>
 </body>
 </html>
