@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Perseids meteor shower</title>
+    <meta name="description" content="A San Diego meteor-watching shortlist, with a map and hourly Clear Sky Charts." />
+    <link rel="icon" href="/assets/img/favicon.png" />
+    <link rel="stylesheet" href="../fun.css" />
+    <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@5.6.0/dist/maplibre-gl.css" />
+    <link rel="stylesheet" href="./perseids.css" />
+    <script src="https://unpkg.com/maplibre-gl@5.6.0/dist/maplibre-gl.js"></script>
+</head>
+<body>
+<div class="page">
+    <a class="back-link" href="/openzhicheng/">← openzhicheng</a>
+    <h1><img src="/assets/emoji/perseids_meteor.png" alt="" width="44" height="36" /> Perseids meteor shower</h1>
+    <div class="map-wrap sketch"><div id="map" aria-label="Meteor-watching locations near San Diego"></div><button id="fit" type="button">Show all spots ↗</button></div>
+    <p id="map-status" class="hint" role="status"></p>
+    <dialog class="forecast sketch" id="forecast" aria-labelledby="place-name">
+        <div class="forecast-body">
+        <button id="close-forecast" type="button" aria-label="Close location details" autofocus>×</button>
+        <div class="forecast-heading"><div><span id="place-tag" class="tag"></span><h2 id="place-name"></h2></div><button id="refresh" type="button">Refresh chart ↻</button></div>
+        <p id="route-status" class="station" role="status"></p>
+        <p id="place-summary"></p>
+        <p id="pin-note" class="hint"></p>
+        <div class="forecast-links"><a id="chart-link" target="_blank" rel="noopener">Open Clear Sky Chart ↗</a><a id="satellite" target="_blank" rel="noopener">Cloud satellite ↗</a><a id="directions" target="_blank" rel="noopener">Find this spot ↗</a><a id="evidence" target="_blank" rel="noopener">Observer reports ↗</a><a id="extra" target="_blank" rel="noopener" hidden>Palomar weather &amp; all-sky camera ↗</a></div>
+        <p id="station-note" class="station"></p>
+        <p id="chart-status" role="status" class="hint"></p>
+        <div class="chart-scroll" tabindex="0" role="region" aria-label="Hourly Clear Sky Chart; scroll horizontally for later hours"><a id="chart-image-link" target="_blank" rel="noopener"><img id="chart" alt="" /></a></div>
+        <p class="hint">Chart by Clear Sky Chart / Danko / Rahill / Environment Canada. Check the dates printed in the image; this is a short-range forecast, not a forecast for a future Perseids peak. Scroll sideways for later hours; open the full chart for hourly values and legends.</p>
+        <div class="reading-guide"><p><b>1 · Cloud Cover</b><br>Look for dark blue. Compare ECMWF Cloud too, when available.</p><p><b>2 · Transparency</b><br>Check for clear air, not just an absence of clouds.</p><p><b>3 · Darkness</b><br>Look for dark hours. This row accounts for the Sun and Moon, not local light pollution.</p></div>
+        <p class="hint">Seeing matters much less for naked-eye meteors. Check smoke and wind too. On the coast, use satellite imagery to double-check the marine layer.</p>
+        </div>
+    </dialog>
+    <details class="shortlist">
+    <summary>The shortlist <span> / 8 places</span></summary>
+    <div id="places" class="places" aria-label="Choose an observing location"></div>
+    </details>
+    <p class="hint footnote">Broad-area pins are for comparison, not verified parking entrances. Check current access and overnight parking before leaving. Forecast stations may be at a different elevation from your spot.</p>
+    <a class="all-charts" href="https://www.cleardarksky.com/csk/prov/California_map.html" target="_blank" rel="noopener">Find another California Clear Sky Chart ↗</a>
+    <footer class="fun-footer"><a href="/openzhicheng/">← openzhicheng</a></footer>
+</div>
+<script type="module" src="./perseids.js"></script>
+</body>
+</html>
