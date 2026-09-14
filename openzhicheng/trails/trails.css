@@ -4,7 +4,7 @@ h1 img { object-fit: contain; vertical-align: middle; filter: drop-shadow(0 2px 
 header { margin-bottom: 1.4rem; }
 header p { margin: .5rem 0 0; }
 .trail-layout { display: grid; grid-template-columns: minmax(0, 1fr) 350px; gap: 1.75rem; align-items: start; }
-.map-column { position: sticky; top: 1.25rem; min-width: 0; }
+.map-column { min-width: 0; }
 .sketch { position: relative; isolation: isolate; }
 .sketch > svg.rough { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; z-index: -1; }
 .map-frame { padding: 6px; outline: 1px solid var(--accent-text); }
@@ -17,7 +17,6 @@ header p { margin: .5rem 0 0; }
 button { font: inherit; color: var(--accent-text); cursor: pointer; }
 #reset-map { border: 0; padding: 0; background: none; text-decoration: underline; text-underline-offset: 3px; }
 #map-status { font-size: .85rem; }
-.notes h2 { margin: -.3rem 0 .5rem; padding: 0; font-size: 1rem; color: var(--accent-text); font-weight: 400; border: 0; }
 .notes article { position: relative; padding: .85rem .6rem 1rem; margin-bottom: .45rem; border: 1px solid transparent; border-radius: 5px; scroll-margin-top: 1rem; }
 .notes article.active { background: #edf5ed; border-color: #a4c4a6; }
 .place-heading { display: grid; grid-template-columns: 20px 1fr auto; gap: .4rem; align-items: baseline; }
@@ -32,8 +31,8 @@ h3 { font-size: 1rem; line-height: 1.4; margin: 0; font-weight: 600; text-decora
 .locate { border: 0; background: none; margin-left: .8rem; padding: .15rem 0; }
 a:hover, .locate:hover { text-decoration-color: var(--accent-text); }
 .pin { background: none; border: 0; padding: 0; width: 30px; height: 38px; font: bold 13px monospace; }
-.pin svg { display: block; width: 30px; height: 38px; overflow: visible; transform-origin: bottom; transition: transform .15s; filter: drop-shadow(0 1px 1px #0003); }
-.pin[aria-pressed="true"] svg, .pin:hover svg { transform: scale(1.2); }
+.pin > svg { display: block; width: 30px; height: 38px; overflow: visible; transform-origin: bottom; transition: transform .15s; filter: drop-shadow(0 1px 1px #0003); }
+.pin[aria-pressed="true"] > svg, .pin:hover > svg { transform: scale(1.2); }
 .origin { width: 26px; height: 26px; color: #555; font: 26px/1 monospace; }
 .origin svg { display: block; width: 26px; height: 26px; overflow: visible; }
 .maplibregl-popup-content { font: .85rem/1.4 var(--font-family); color: var(--accent-text); background: var(--bg-color); padding: 7px 10px; box-shadow: 0 1px 4px #0002; pointer-events: none; }
@@ -44,7 +43,6 @@ a:hover, .locate:hover { text-decoration-color: var(--accent-text); }
     .map-column { position: static; }
     #map { height: 440px; min-height: 0; }
     .notes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .5rem 1rem; }
-    .notes h2 { grid-column: 1 / -1; }
 }
 @media (max-width: 600px) {
     .notes { display: block; }
@@ -52,14 +50,25 @@ a:hover, .locate:hover { text-decoration-color: var(--accent-text); }
     h1 { font-size: 1.65rem; }
     #map { height: 360px; }
 }
-@media (prefers-reduced-motion: reduce) { .pin svg { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .pin > svg { transition: none; } }
 
 /* Ink outlines stay behind the content and redraw with each card's size. */
 .notes article.sketched { isolation: isolate; border-color: transparent; border-radius: 0; background: none; }
 .card-sketch { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1; overflow: visible; }
-.number svg { display: block; width: 19px; height: 25px; }
+.number > svg { display: block; width: 19px; height: 25px; }
 .sketch-arrow { display: inline-block; width: 17px; height: 17px; vertical-align: -.2em; overflow: visible; }
 #route-status { font-size: .85rem; color: var(--accent-text); }
 
 .thanks { margin: 1.5rem 0 0; font-size: .95rem; color: var(--accent-hover); }
 .thanks a { text-decoration: underline; text-decoration-color: #c8e6c9; text-underline-offset: 3px; }
+
+.map-legend { display: flex; align-items: center; gap: .5rem; margin: .5rem .3rem; color: var(--accent-hover); font-size: .8rem; }
+.brian-mark { display: inline-flex; justify-content: center; flex: 0 0 26px; height: 26px; }
+.brian-mark svg { width: 20px; height: 24px; overflow: visible; }
+.pin-tooltip { display: none; position: absolute; bottom: calc(100% + 7px); left: 50%; transform: translateX(-50%); width: 155px; padding: 6px 9px; background: var(--bg-color); color: var(--accent-hover); box-shadow: 0 1px 4px #0002; font: .8rem/1.4 var(--font-family); pointer-events: none; }
+.pin:hover, .pin:focus-visible { z-index: 2; }
+.pin:hover .pin-tooltip, .pin:focus-visible .pin-tooltip { display: block; }
+
+.origin-key { display: inline-flex; align-items: center; gap: .5rem; }
+.origin-key .origin { flex: 0 0 26px; }
+.map-caption { align-items: center; }

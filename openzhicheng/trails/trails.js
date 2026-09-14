@@ -29,7 +29,20 @@
     const digits = ['M 6 8 L 11 3 L 11 23 M 6 23 L 17 23', 'M 4 7 C 5 -1 19 0 18 8 C 18 12 9 16 4 23 L 19 23', 'M 4 4 C 20 -2 23 12 11 12 C 25 11 22 28 4 22', 'M 15 24 L 15 2 L 3 17 L 21 17', 'M 19 3 L 5 3 L 4 12 C 22 6 25 29 3 23'];
     function numberArt(n, color = ink) {
         const svg = document.createElementNS(SVG, 'svg'); svg.setAttribute('viewBox', '0 0 24 28'); svg.setAttribute('aria-hidden', 'true');
-        svg.append(rough.svg(svg).path(digits[n - 1], { ...pens[n - 1], stroke: color, fill: 'none', seed: 70 + n }));
+        const index = n === 'B' ? 3 : n - 1;
+        const path = n === 'B' ? 'M 5 24 L 6 3 C 23 0 23 13 7 13 M 7 13 C 26 9 25 27 5 24' : digits[index];
+        svg.append(rough.svg(svg).path(path, { ...pens[index], stroke: color, fill: 'none', seed: 71 + index }));
+        return svg;
+    }
+    function placeNumberArt(number, favourite, color = ink) {
+        const svg = numberArt(number, color);
+        if (favourite) {
+            svg.setAttribute('viewBox', '0 0 34 28');
+            const suffix = numberArt('B', color);
+            suffix.setAttribute('x', '22'); suffix.setAttribute('y', '0');
+            suffix.setAttribute('width', '11'); suffix.setAttribute('height', '13');
+            svg.append(suffix);
+        }
         return svg;
     }
     function drawCard(article, i) {
@@ -44,7 +57,9 @@
         document.querySelectorAll('.notes article').forEach((article, i) => {
             article.classList.add('sketched');
             const number = article.querySelector('.number');
-            number.setAttribute('aria-label', String(i + 1)); number.replaceChildren(numberArt(i + 1));
+            const favourite = article.hasAttribute('data-brian-favourite');
+            number.setAttribute('aria-label', favourite ? `${i + 1}, Brian Hempel’s favourite` : String(i + 1));
+            number.replaceChildren(placeNumberArt(i + 1, favourite));
             article.querySelectorAll('a, .locate').forEach((link, j) => {
                 if (link.querySelector('.sketch-arrow')) return;
                 link.textContent = link.textContent.replace('↗', '').trim() + ' ';
@@ -55,20 +70,37 @@
             drawCard(article, i);
         });
     }
-    function pinArt(number) {
+    let pinSequence = 0;
+    function pinArt(number, favourite = false) {
         const svg = document.createElementNS(SVG, 'svg');
         svg.setAttribute('viewBox', '0 0 30 38');
         svg.setAttribute('aria-hidden', 'true');
         const rc = rough.svg(svg);
-        svg.append(rc.circle(15, 13, 23, { ...sketchOptions, fill: '#F7F9FC', fillStyle: 'solid', roughness: .6, seed: 12 }));
-        svg.append(rc.circle(15, 13, 21, { stroke: ink, strokeWidth: 1.1, fill: ink, fillStyle: 'zigzag', fillWeight: 3.2, hachureGap: 4.5, hachureAngle: -45, roughness: .8, seed: 100 + number * 7 }));
+        const fill = document.createElementNS(SVG, 'g');
+        {
+            const defs = document.createElementNS(SVG, 'defs');
+            const clip = document.createElementNS(SVG, 'clipPath');
+            clip.id = `pin-fill-${++pinSequence}`;
+            const circle = document.createElementNS(SVG, 'circle');
+            circle.setAttribute('cx', '15'); circle.setAttribute('cy', '13');
+            circle.setAttribute('r', '10');
+            clip.append(circle); defs.append(clip); svg.append(defs);
+            fill.setAttribute('clip-path', `url(#${clip.id})`);
+        }
+        fill.append(rc.circle(15, 13, 23, { ...sketchOptions, stroke: 'none', fill: '#F7F9FC', fillStyle: 'solid', roughness: .6, seed: 12 }));
+        fill.append(rc.circle(15, 13, 21, { stroke: 'none', strokeWidth: 1.1, fill: '#F7F9FC', fillStyle: 'zigzag', fillWeight: 3.2, hachureGap: 4.5, hachureAngle: -45, roughness: .8, seed: 100 + number * 7 }));
+        svg.append(fill);
+        const outline = rc.circle(15, 13, 23, { ...sketchOptions, fill: 'none', roughness: .6, seed: 12 });
+        if (favourite) outline.setAttribute('transform', 'rotate(90 15 13)');
+        svg.append(outline);
         svg.append(rc.line(15, 25, 15, 37, { ...sketchOptions, roughness: .5, seed: 12 }));
-        const numeral = numberArt(number, 'white');
-        numeral.setAttribute('x', '9'); numeral.setAttribute('y', '5'); numeral.setAttribute('width', '12'); numeral.setAttribute('height', '16');
+        const numeral = placeNumberArt(number, favourite, ink);
+        numeral.setAttribute('x', favourite ? '5' : '9'); numeral.setAttribute('y', favourite ? '7' : '5'); numeral.setAttribute('width', favourite ? '18' : '12'); numeral.setAttribute('height', '16');
         svg.append(numeral);
         return svg;
     }
     sketchNotes();
+    if (window.rough) document.querySelector('.brian-mark').replaceChildren(numberArt('B'));
     drawFrame();
     new ResizeObserver(drawFrame).observe(document.querySelector('.map-frame'));
     const status = document.getElementById('map-status');
@@ -79,7 +111,7 @@
     const origin = [-117.2274, 32.8770];
     const articles = [...document.querySelectorAll('.notes article')];
     const places = articles.flatMap((article, index) => JSON.parse(article.dataset.places)
-        .map(([name, lng, lat]) => ({ name, coords: [lng, lat], article, number: index + 1 })));
+        .map(([name, lng, lat]) => ({ name, coords: [lng, lat], article, favourite: article.hasAttribute('data-brian-favourite'), number: index + 1 })));
     let map;
     try {
         map = new maplibregl.Map({
@@ -148,7 +180,7 @@
         places.forEach(p => p.element.setAttribute('aria-pressed', String(p.article === place.article)));
         label?.remove();
         label = new maplibregl.Popup({ closeButton: false, closeOnClick: false, offset: 20 })
-            .setLngLat(place.coords).setText(place.name).addTo(map);
+            .setLngLat(place.coords).setText(place.favourite ? `${place.name} · Brian Hempel’s favourite` : place.name).addTo(map);
         map.easeTo({ center: place.coords, duration });
         if (window.rough) articles.forEach(drawCard);
     }
@@ -156,11 +188,21 @@
         const element = document.createElement('button');
         element.type = 'button';
         element.className = 'pin';
-        if (window.rough) element.append(pinArt(place.number));
-        else element.textContent = place.number;
+        if (window.rough) element.append(pinArt(place.number, place.favourite));
+        else {
+            element.textContent = place.number;
+            if (place.favourite) { const suffix = document.createElement('sup'); suffix.textContent = 'B'; element.append(suffix); }
+        }
         element.setAttribute('aria-pressed', 'false');
-        element.title = place.name;
-        element.setAttribute('aria-label', `${place.name}: ${place.article.querySelector('.written').textContent}`);
+        element.title = place.favourite ? `${place.name}: Brian Hempel’s favourite` : place.name;
+        if (place.favourite) {
+            const tooltip = document.createElement('span');
+            tooltip.className = 'pin-tooltip';
+            tooltip.textContent = 'Brian Hempel’s favourite';
+            tooltip.setAttribute('aria-hidden', 'true');
+            element.append(tooltip);
+        }
+        element.setAttribute('aria-label', `${element.title}: ${place.article.querySelector('.written').textContent}`);
         element.addEventListener('click', () => select(place));
         place.element = element;
         new maplibregl.Marker({ element, anchor: 'bottom' }).setLngLat(place.coords).addTo(map);
@@ -204,6 +246,7 @@
             hachureGap: 3.5, hachureAngle: -45, seed: 2,
         }));
         star.append(svg);
+        document.getElementById('origin-legend').replaceChildren(svg.cloneNode(true));
     } else {
         star.textContent = '★';
     }

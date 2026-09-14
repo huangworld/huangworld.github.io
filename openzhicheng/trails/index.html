@@ -21,13 +21,13 @@
         <div class="trail-layout">
             <section class="map-column" aria-label="Trail map">
                 <div class="map-frame sketch"><div id="map" aria-label="Map of San Diego trails"></div></div>
-                <div class="map-caption"><span>★ UCSD Graduate Housing</span><button id="reset-map" hidden>Show all places ↗</button></div>
+                <div class="map-caption"><span class="origin-key"><span class="origin" id="origin-legend" aria-hidden="true">★</span> UCSD Graduate Housing</span><button id="reset-map" hidden>Show all places ↗</button></div>
+                <p class="map-legend"><span class="brian-mark" aria-hidden="true">B</span> Brian Hempel’s favourite</p>
                 <p id="map-status" role="status"></p>
                 <p id="route-status" role="status"></p>
                 <noscript><p>Enable JavaScript for the map. All my notes and map links are below.</p></noscript>
             </section>
-            <section class="notes" aria-labelledby="notes-title">
-                <h2 id="notes-title">My notes</h2>
+            <section class="notes" aria-label="Trail notes">
                 <article id="annie" data-places='[["Annie’s Trail",-117.26414,33.00575]]'>
                     <div class="place-heading"><span class="number">1</span><h3>Annie’s Trail</h3><span class="drive">14 min</span></div>
                     <p class="written">This one's coastal, seems nice before sunset?</p>
@@ -43,7 +43,7 @@
                     <p class="written">HOT! go before sunrise</p>
                     <a href="https://www.google.com/maps/search/?api=1&amp;query=Iron+Mountain+Trailhead+Poway">Open in Maps ↗</a>
                 </article>
-                <article id="cuyamaca" data-places='[["Cuyamaca Peak",-116.5808,32.9594]]'>
+                <article id="cuyamaca" data-brian-favourite data-places='[["Cuyamaca Peak",-116.5808,32.9594]]'>
                     <div class="place-heading"><span class="number">4</span><h3>Cuyamaca Peak</h3><span class="drive">52 min</span></div>
                     <div class="place-detail">Cuyamaca Rancho State Park</div>
                     <p class="written">More shaded + higher, nice view, Brian's favourite</p>
