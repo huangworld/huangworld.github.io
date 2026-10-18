@@ -363,6 +363,33 @@ h2.short-bio {
     margin-top: 8px;
 }
 
+.links .tldr-toggle.active {
+    text-decoration: underline;
+}
+
+.publications-table .tldr-row[hidden] {
+    display: none;
+}
+
+/* Pull the TL;DR row toward its entry; the table's 32px row spacing would otherwise detach it. */
+.publications .tldr-row .tldr {
+    margin-top: -18px;
+    padding: 14px 18px;
+    border-radius: 8px;
+    background-color: color-mix(in srgb, var(--accent-bg) 50%, transparent);
+}
+
+.publications .tldr p {
+    margin: 0 0 8px;
+    font-size: 13px;
+    line-height: 1.6;
+    color: #555;
+}
+
+.publications .tldr p:last-child {
+    margin-bottom: 0;
+}
+
 /* Offset for anchored headings */
 section[id], #bio, #research-interest {
     scroll-margin-top: 20px;
@@ -560,6 +587,20 @@ svg.rough-annotation {
     .publications-table tr:last-child {
         border-bottom: none;
         padding-bottom: 0;
+    }
+
+    .publications-table tr:has(+ .tldr-row:not([hidden])) {
+        border-bottom: none;
+        padding-bottom: 0;
+        margin-bottom: 15px;
+    }
+
+    .publications-table .tldr-row td {
+        display: block;
+    }
+
+    .publications .tldr-row .tldr {
+        margin-top: 0;
     }
     
     .teaser-cell {
