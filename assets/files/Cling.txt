@@ -1,6 +1,9 @@
-@unpublished{huang2026cling,
+@misc{huang2026cling,
   title={Cling: Supporting Cross-Page Coordination with Human-Directed, In-Situ, and Small-Step Automation},
   author={Huang, Zhicheng and Cao, Yining and Xia, Haijun},
   year={2026},
-  note={Preprint}
+  eprint={2610.25879},
+  archivePrefix={arXiv},
+  primaryClass={cs.HC},
+  url={https://arxiv.org/abs/2610.25879}
 }

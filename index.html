@@ -153,12 +153,46 @@
 
 <section id="publications">
     <h2 class="section-header">Publications <a href="https://scholar.google.com/citations?user=_msJ5AcAAAAJ&hl=en" target="_blank" class="header-link">[Google Scholar]</a></h2>
-    <p style="font-size: 14px; color: #666; margin-top: -10px; margin-bottom: 15px;">* denotes equal contribution</p>
+    <div class="pub-toolbar">
+      <div class="pub-filters" role="group" aria-label="Filter publications">
+        <button type="button" class="on" data-type="conference" aria-pressed="true"><span class="box"></span>Conference</button>
+        <button type="button" class="on" data-type="workshop" aria-pressed="true"><span class="box"></span>Workshop</button>
+        <button type="button" class="on" data-type="preprint" aria-pressed="true"><span class="box"></span>Preprint</button>
+      </div>
+      <p class="pub-note">* denotes equal contribution</p>
+    </div>
 
 <div class="publications">
 <table class="publications-table">
 
-<tr>
+<tr data-type="preprint">
+  <td class="teaser-cell">
+    <div class="figure-sketch" data-sketch-frame><img src="./assets/files/Cling.png" class="teaser" /></div>
+    <div class="badge">Preprint 2026</div>
+  </td>
+  <td class="description-cell">
+      <div class="title"><a href="https://arxiv.org/abs/2610.25879">Cling: Supporting Cross-Page Coordination with Human-Directed, In-Situ, and Small-Step Automation</a></div>
+      <div class="author">Zhicheng Huang, Yining Cao, Haijun Xia</div>
+      <div class="periodical"><em>arXiv preprint arXiv:2610.25879, 2026</em>
+      </div>
+    <div class="links">
+      <a href="./assets/files/Cling.pdf" class="btn btn-sm z-depth-0" role="button" target="_blank">PDF</a>
+      <a href="https://arxiv.org/abs/2610.25879" class="btn btn-sm z-depth-0" role="button" target="_blank">arXiv</a>
+      <a href="./assets/files/Cling.txt" class="btn btn-sm z-depth-0" role="button" target="_blank">BibTex</a>
+      <a href="#" class="btn btn-sm z-depth-0 tldr-toggle" role="button" aria-expanded="false">TL;DR</a>
+    </div>
+  </td>
+</tr>
+<tr class="tldr-row" data-type="preprint" hidden>
+  <td colspan="2">
+    <div class="tldr">
+      <p>Web tasks often span across multiple webpages and require people to repetitively interact (e.g., click, scroll, copy, type) over them. Because webpages are independently developed and generally lack incentives for interoperability, we envision a client-side remedy. In contrast to end-to-end automation which assumes well-specified information need, we believe that people should have a set of small-step automation primitives to selectively apply in any point of their information work, even with partial information need.</p>
+      <p>For each webpage, Cling parses its content into a typed, relational database, while maintaining a bidirectional mapping between each database entry and its corresponding DOM element on the page. When people interact with page content, Cling identifies automation opportunities using the type, value, and other metadata of its corresponding database entry, before surfacing and executing them on the original webpage.</p>
+    </div>
+  </td>
+</tr>
+
+<tr data-type="conference">
   <td class="teaser-cell">
     <div class="figure-sketch" data-sketch-frame><img src="assets/files/fractal_overview.png" class="teaser" /></div>
     <div class="badge">NSDI 2026</div>
@@ -182,7 +216,43 @@
   </td>
 </tr>
 
-<tr>
+<tr data-type="workshop">
+  <td class="teaser-cell">
+    <div class="figure-sketch" data-sketch-frame><img src="./assets/files/genui_workshop_teaser.png" class="teaser" /></div>
+    <div class="badge">CHI 2026 Workshop</div>
+  </td>
+  <td class="description-cell">
+      <div class="title"><a href="./assets/files/maintenance_personal_genui_chi26_workshop.pdf">Maintenance of Personal Generative User Interfaces</a></div>
+      <div class="author">Zhicheng Huang, Haijun Xia</div>
+      <div class="periodical"><em>CHI 2026 Workshop on Generative UI (GenUI meets HCI)</em>
+      </div>
+    <div class="links">
+      <a href="./assets/files/maintenance_personal_genui_chi26_workshop.pdf" class="btn btn-sm z-depth-0" role="button" target="_blank">PDF</a>
+      <a href="https://genuimeetshci.github.io/chi26-workshop/" class="btn btn-sm z-depth-0" role="button" target="_blank">Workshop</a>
+      <a href="./assets/files/genui_workshop.txt" class="btn btn-sm z-depth-0" role="button" target="_blank">BibTex</a>
+    </div>
+  </td>
+</tr>
+
+<tr data-type="preprint">
+  <td class="teaser-cell">
+    <div class="figure-sketch" data-sketch-frame><img src="./assets/files/gradual_teaser.png" class="teaser" /></div>
+    <div class="badge">Preprint 2026</div>
+  </td>
+  <td class="description-cell">
+      <div class="title"><a href="https://arxiv.org/abs/2601.17975">Gradual Generation of User Interfaces as a Design Method for Malleable Software</a></div>
+      <div class="author">Bryan Min, Peiling Jiang, Zhicheng Huang, Haijun Xia</div>
+      <div class="periodical"><em>arXiv preprint arXiv:2601.17975, 2026</em>
+      </div>
+    <div class="links">
+      <a href="./assets/files/gradual_min.pdf" class="btn btn-sm z-depth-0" role="button" target="_blank">PDF</a>
+      <a href="https://arxiv.org/abs/2601.17975" class="btn btn-sm z-depth-0" role="button" target="_blank">arXiv</a>
+      <a href="./assets/files/gradual.txt" class="btn btn-sm z-depth-0" role="button" target="_blank">BibTex</a>
+    </div>
+  </td>
+</tr>
+
+<tr data-type="conference">
   <td class="teaser-cell">
     <div class="figure-sketch" data-sketch-frame><img src="./assets/files/irchiver_workflow.jpg" class="teaser" /></div>
     <div class="badge">CHIIR 2025</div>
@@ -205,7 +275,7 @@
   </td>
 </tr>
 
-<tr>
+<tr data-type="conference">
   <td class="teaser-cell">
     <div class="figure-sketch" data-sketch-frame><img src="./assets/files/MIWA_thumbnail.jpg" class="teaser" /></div>
     <div class="badge">UIST 2023</div>
@@ -228,7 +298,7 @@
   </td>
 </tr>
 
-<tr>
+<tr data-type="conference">
   <td class="teaser-cell">
     <div class="figure-sketch" data-sketch-frame><img src="./assets/files/WebRobot.jpg" class="teaser" /></div>
     <div class="badge">PLDI 2022</div>
@@ -253,76 +323,7 @@
 </tr>
 
 </table>
-</div>
-
-    <h2 class="section-header">Workshop Papers, Posters &amp; Preprints</h2>
-
-<div class="publications">
-<table class="publications-table">
-
-<tr>
-  <td class="teaser-cell">
-    <div class="figure-sketch" data-sketch-frame><img src="./assets/files/Cling.png" class="teaser" /></div>
-    <div class="badge">Preprint 2026</div>
-  </td>
-  <td class="description-cell">
-      <div class="title"><a href="./assets/files/Cling.pdf">Cling: Supporting Cross-Page Coordination with Human-Directed, In-Situ, and Small-Step Automation</a></div>
-      <div class="author">Zhicheng Huang, Yining Cao, Haijun Xia</div>
-      <div class="periodical"><em>Preprint, 2026</em>
-      </div>
-    <div class="links">
-      <a href="./assets/files/Cling.pdf" class="btn btn-sm z-depth-0" role="button" target="_blank">PDF</a>
-      <a href="./assets/files/Cling.txt" class="btn btn-sm z-depth-0" role="button" target="_blank">BibTex</a>
-      <a href="#" class="btn btn-sm z-depth-0 tldr-toggle" role="button" aria-expanded="false">TL;DR</a>
-    </div>
-  </td>
-</tr>
-<tr class="tldr-row" hidden>
-  <td colspan="2">
-    <div class="tldr">
-      <p>Web tasks often span across multiple webpages and require people to repetitively interact (e.g., click, scroll, copy, type) over them. Because webpages are independently developed and generally lack incentives for interoperability, we envision a client-side remedy. In contrast to end-to-end automation which assumes well-specified information need, we believe that people should have a set of small-step automation primitives to selectively apply in any point of their information work, even with partial information need.</p>
-      <p>For each webpage, Cling parses its content into a typed, relational database, while maintaining a bidirectional mapping between each database entry and its corresponding DOM element on the page. When people interact with page content, Cling identifies automation opportunities using the type, value, and other metadata of its corresponding database entry, before surfacing and executing them on the original webpage.</p>
-    </div>
-  </td>
-</tr>
-
-<tr>
-  <td class="teaser-cell">
-    <div class="figure-sketch" data-sketch-frame><img src="./assets/files/genui_workshop_teaser.png" class="teaser" /></div>
-    <div class="badge">CHI 2026 Workshop</div>
-  </td>
-  <td class="description-cell">
-      <div class="title"><a href="./assets/files/maintenance_personal_genui_chi26_workshop.pdf">Maintenance of Personal Generative User Interfaces</a></div>
-      <div class="author">Zhicheng Huang, Haijun Xia</div>
-      <div class="periodical"><em>CHI 2026 Workshop on Generative UI (GenUI meets HCI)</em>
-      </div>
-    <div class="links">
-      <a href="./assets/files/maintenance_personal_genui_chi26_workshop.pdf" class="btn btn-sm z-depth-0" role="button" target="_blank">PDF</a>
-      <a href="https://genuimeetshci.github.io/chi26-workshop/" class="btn btn-sm z-depth-0" role="button" target="_blank">Workshop</a>
-      <a href="./assets/files/genui_workshop.txt" class="btn btn-sm z-depth-0" role="button" target="_blank">BibTex</a>
-    </div>
-  </td>
-</tr>
-
-<tr>
-  <td class="teaser-cell">
-    <div class="figure-sketch" data-sketch-frame><img src="./assets/files/gradual_teaser.png" class="teaser" /></div>
-    <div class="badge">Preprint 2026</div>
-  </td>
-  <td class="description-cell">
-      <div class="title"><a href="https://arxiv.org/abs/2601.17975">Gradual Generation of User Interfaces as a Design Method for Malleable Software</a></div>
-      <div class="author">Bryan Min, Peiling Jiang, Zhicheng Huang, Haijun Xia</div>
-      <div class="periodical"><em>arXiv preprint arXiv:2601.17975, 2026</em>
-      </div>
-    <div class="links">
-      <a href="./assets/files/gradual_min.pdf" class="btn btn-sm z-depth-0" role="button" target="_blank">PDF</a>
-      <a href="https://arxiv.org/abs/2601.17975" class="btn btn-sm z-depth-0" role="button" target="_blank">arXiv</a>
-      <a href="./assets/files/gradual.txt" class="btn btn-sm z-depth-0" role="button" target="_blank">BibTex</a>
-    </div>
-  </td>
-</tr>
-
-</table>
+<p class="pub-empty" hidden>No publications match the selected filters.</p>
 </div>
 </section>
       <br>
@@ -346,6 +347,7 @@
     </div>
     <script src="./assets/js/scale.fix.js"></script>
     <script type="module" src="./assets/js/sketch-frames.js"></script>
+    <script type="module" src="./assets/js/pub-filters.js"></script>
     <script>
       // Name block: scale "Huang" so its width matches "Zhicheng".
       (() => {

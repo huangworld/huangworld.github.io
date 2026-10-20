@@ -363,6 +363,75 @@ h2.short-bio {
     margin-top: 8px;
 }
 
+/* Publication type filters, drawn with the same rough.js checkbox as /openzhicheng/driving */
+.pub-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px 16px;
+    margin: -6px 0 15px;
+}
+
+.pub-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 24px;
+}
+
+.pub-filters button {
+    font: inherit;
+    font-size: 14px;
+    color: var(--text-color);
+    background: none;
+    border: 0;
+    cursor: pointer;
+    padding: 2px 6px;
+    margin: -2px -6px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.pub-filters button.on {
+    background: url("https://s2.svgbox.net/pen-brushes.svg?ic=brush-1&color=c8e6c9") no-repeat;
+    background-size: 100% 100%;
+}
+
+.pub-filters button:not(.on) {
+    color: #999;
+}
+
+.pub-filters .box {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    position: relative;
+}
+
+.pub-filters .box svg {
+    position: absolute;
+    inset: -3px;
+    width: 20px;
+    height: 20px;
+    overflow: visible;
+}
+
+.pub-toolbar .pub-note {
+    margin: 0;
+    font-size: 14px;
+    color: #666;
+}
+
+.publications-table tr.filtered-out {
+    display: none;
+}
+
+.pub-empty {
+    font-size: 14px;
+    color: #888;
+}
+
 .links .tldr-toggle.active {
     text-decoration: underline;
 }
